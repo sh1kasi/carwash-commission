@@ -1,0 +1,29 @@
+/* Write your custom CSS here */
+
+.count-cart {
+    background-color: #ff0000;
+    color: #ffffff;
+    border-radius: 50%;
+    padding-left: 5px;
+    padding-top: 1px;
+    font-size: 14px;
+  
+    height: 18px;
+    width: 18px;
+    position: absolute;
+    top: 10px;
+    right: 65px;
+  }
+  .count-cart2 {
+    background-color: #ff0000;
+    color: #ffffff;
+    padding-left: 5px;
+    padding-top: 1px;
+    font-size: 14px;
+  
+    height: 19px;
+    width: 26px;
+    position: absolute;
+    top: 10px;
+    right: 60px;
+  }
