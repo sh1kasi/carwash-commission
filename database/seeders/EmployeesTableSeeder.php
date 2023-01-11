@@ -24,7 +24,7 @@ class EmployeesTableSeeder extends Seeder
             ['name' => 'Miftah'],
             ['name' => 'Nurdin'],
             ['name' => 'Indrawan'],
-            ['name' => 'Andres'],
+            ['name' => 'Andreas'],
             ['name' => 'Arif'],
             ['name' => 'Rohman']
         ];

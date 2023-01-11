@@ -168,7 +168,13 @@
                     Main
                   </li>
                   <li class="active-page">
-                    <a href="index.html"><i data-feather="home"></i>Transaksi</a>
+                    <a href={{ route('transaction.index') }}><i data-feather="dollar-sign"></i>Transaksi</a>
+                  </li>
+                  <li class="active-page mt-3">
+                    <a href={{ route('employee.index') }}><i data-feather="users"></i>Pegawai</a>
+                  </li>
+                  <li class="active-page mt-3">
+                    <a href={{ route('product.index') }}><i data-feather="briefcase"></i>Layanan</a>
                   </li>
                 </ul>
             </div>        

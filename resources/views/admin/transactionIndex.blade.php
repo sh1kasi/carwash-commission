@@ -15,8 +15,9 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Transaksi</h5>
-                        <a href="#" id="addRow" data-bs-toggle="modal" data-bs-target="#transactionForm" class="btn btn-primary m-b-md">Tambah Transaksi</a>
-                        <table id="Tables123" class="display table table-bordered" style="width:100%">
+                        <a href="#" id="addRow" data-bs-toggle="modal" data-bs-target="#transactionForm" class="btn btn-primary m-b-md">Tambah Transaksi</a> <br>
+                        <p style="font-size: 16px; font-weight: 600; text-align:center" class="pb-6">Transaksi Tanggal {{ $tgl }}</p>
+                        <table id="Tables123" class="display table table-bordered" style="width:100%; margin-top: 40px">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -28,7 +29,7 @@
                                     <th>Detail Komisi</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            {{-- <tbody>
                                 @foreach ($transaction as $data)    
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
@@ -54,7 +55,7 @@
                                         </td>
                                     </tr>
                                 @endforeach
-                            </tbody>
+                            </tbody> --}}
                         </table>
                     </div>
                 </div>      
@@ -70,7 +71,21 @@
 
 <script>
     $(document).ready( function () {
-      $('#Tables123').DataTable();
+      $('#Tables123').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: '{!! route('transaction.json') !!}',
+        columns: [
+            {data: 'id', name: '#'},
+            {data: 'customer', name: 'NO POL'},
+            {data: 'service', name: 'Jenis Layanan'},
+            {data: 'workers', name: 'Penggarap'},
+            {data: 'total_price', name: 'Total Harga'},
+            {data: 'tanggal', name: 'Tanggal'},
+            {data: 'detail', name: 'Detail Komisi'},
+            
+        ]
+      });
     });
 
 

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('employee_id')->constrained('employees')->onDelete('restrict');
             $table->foreignId('transaction_id')->constrained('transactions')->onDelete('restrict');
+            $table->string('status');
             $table->timestamps();
         });
     }

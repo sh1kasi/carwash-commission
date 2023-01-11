@@ -66,10 +66,15 @@
             });
             $("#total_harga").html(`Total: &nbsp; Rp ${response.transaction.total_price.toLocaleString("id-ID")}`);
             $("#penggarap").html("");
+            
+            // $(response.extra).each(function (key, pivot) {
+            //   console.log(pivot);
+            // });
+
             $(response.worker).each(function (key, workers) {
                 $("#penggarap").append(`<tr>
                                             <td>${workers.name}</td>
-                                            <td>Rp ${response.commission.toLocaleString('id-ID')}</td>
+                                            <td>${response.commission.toLocaleString('id-ID')}</td>
                                         </tr>`);
                 $("#total_komisi").html(`Rp ${response.transaction.comission.toLocaleString('id-ID')}`);
             });

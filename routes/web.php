@@ -1,9 +1,11 @@
 <?php
 
+use App\Models\Transaction;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TransactionController;
-use App\Models\Transaction;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,8 +25,16 @@ Route::get('/', function () {
 
 // Transaction
 Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction.index');
+Route::get('/transaction/json', [TransactionController::class, 'data'])->name('transaction.json');
 Route::post('/transaction-total', [TransactionController::class, 'total_price_check'])->name('transaction.totalCheck');
 Route::post('/transaction-store', [TransactionController::class, 'transaction_store'])->name('transaction.store');
-Route::post('/transaction-detail', [TransactionController::class, 'commission_detail'])->name('transaction_detail');
+Route::post('/transaction-detail', [TransactionController::class, 'commission_detail'])->name('transaction.detail');
+Route::post('/transaction-extraworkers', [TransactionController::class, 'extra_workers'])->name('transaction.extra');
+
+// Employee
+Route::get('/employee', [EmployeeController::class, 'index'])->name('employee.index');
+
+// Product
+Route::get('/layanan', [ProductController::class, 'index'])->name('product.index');
 
 // Route::post('/customer-import', [CustomerController::class, 'importExcel'])->name('customer.import');

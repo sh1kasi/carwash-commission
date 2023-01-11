@@ -12,7 +12,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary simpan">Save changes</button>
             </div>
         </div>
     </div>
@@ -20,10 +20,38 @@
 
 <script>
 
-$(document).ready(function () {
+function extraWorkers(id) {
+  var extra_workers = [];
   
-  // alert($("#transaction_id").val());
+  $(".cbextra:checkbox:checked").each(function () {
+    extra_workers.push($(this).val());
+  })
 
-});
+  
+  $(document).ready(function () {
+    $('.simpan').click(function (e) { 
+      e.preventDefault();
+      
+      var transaction_id = $("#transaction_id").val();
+
+      console.log(extra_workers);
+
+      $.ajax({
+        type: "post",
+        url: "/transaction-extraworkers",
+        data: {
+          extra: extra_workers,
+          id: transaction_id,
+        },
+        success: function (response) {
+          
+        }
+      });
+
+    });
+  });
+  
+  
+}
 
 </script>

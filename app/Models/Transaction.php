@@ -21,6 +21,6 @@ class Transaction extends Model
 
     public function employees()
     {
-        return $this->belongsToMany(Employee::class);
+        return $this->belongsToMany(Employee::class)->withPivot('employee_id');
     }
 }

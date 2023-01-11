@@ -126,16 +126,16 @@
         success: function (response) {
 
           if (response.tambahan == true) {
-            // window.location.reload();
+            window.location.reload();
             $("#transaction_id").val(response.data.id);
-            $(response.worker).each(function (key, extra) {
-              $("#extraWorks").append(`
-              <input type="checkbox" name="inputExtra" value="${extra.id}" id="inputExtra">
-              <label for="inputExtra" id="extraName">${extra.name}</label>  
-              `);
-            });
-            $('#extraWorksModal').modal('show');
-            $('#transactionForm').modal('hide');
+            // $(response.worker).each(function (key, extra) {
+            //   $("#extraWorks").append(`
+            //   <input type="checkbox" name="inputExtra" class="cbextra" onclick="extraWorkers(${extra.id})" value="${extra.id}" id="inputExtra">
+            //   <label for="inputExtra" id="extraName">${extra.name}</label>  
+            //   `);
+            // });
+            // $('#extraWorksModal').modal('show');
+            // $('#transactionForm').modal('hide');
           } else {
             window.location.reload();
           }
