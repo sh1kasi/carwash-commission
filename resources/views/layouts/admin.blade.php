@@ -21,12 +21,19 @@
         <link href="{{ asset('template') }}/plugins/font-awesome/css/all.min.css" rel="stylesheet">
         <link href="{{ asset('template') }}/plugins/perfectscroll/perfect-scrollbar.css" rel="stylesheet">
         <link href="{{ asset('template') }}/plugins/apexcharts/apexcharts.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css" integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw==" crossorigin="anonymous" referrerpolicy="no-referrer" />  
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
+        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.bootstrap.min.css">
 
       
         <!-- Theme Styles -->
         <link href="{{ asset('template') }}/css/main.min.css" rel="stylesheet">
         <link href="{{ asset('template') }}/css/custom.css" rel="stylesheet">
+        {{-- <link href="{{ asset('template') }}/css/dark-theme.css" rel="stylesheet"> --}}
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -34,6 +41,10 @@
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+          <script>
+            const token = `{{ csrf_token() }}`;
+          </script>
+
     </head>
     <body>
 
@@ -167,14 +178,26 @@
                   <li class="sidebar-title">
                     Main
                   </li>
-                  <li class="active-page">
+                  <li class="@if (Route::current()->getName() == 'transaction.index')
+                      active-page
+                  @endif"
+                  >
                     <a href={{ route('transaction.index') }}><i data-feather="dollar-sign"></i>Transaksi</a>
                   </li>
-                  <li class="active-page mt-3">
+                  <li class="mt-3 @if (Route::current()->getName() == 'employee.index')
+                    active-page
+                @endif">
                     <a href={{ route('employee.index') }}><i data-feather="users"></i>Pegawai</a>
                   </li>
-                  <li class="active-page mt-3">
+                  <li class="mt-3 @if (Route::current()->getName() == 'product.index')
+                    active-page
+                @endif">
                     <a href={{ route('product.index') }}><i data-feather="briefcase"></i>Layanan</a>
+                  </li>
+                  <li class="mt-3 @if (Route::current()->getName() == 'bundle.index')
+                    active-page
+                @endif">
+                    <a href={{ route('bundle.index') }}><i data-feather="briefcase"></i>Bundling</a>
                   </li>
                 </ul>
             </div>        
@@ -185,9 +208,18 @@
         <!-- Javascripts -->
         <script src="{{ asset('template') }}/plugins/jquery/jquery-3.4.1.min.js"></script>
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+        <script type="https://cdnjs.cloudflare.com/ajax/libs/datatables-buttons/2.3.3/js/dataTables.buttons.min.js" integrity="sha512-8sSGWfEP0O2tSZiaGmlHw9YZ6fKrfVfuC6DG5/URxgL8otfSK6bRDuRp6rO2U+EN3lVKIUBOG9GE8ss3FVJ1vw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script type="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
+        <script type="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js" integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://unpkg.com/@popperjs/core@2"></script>
         <script src="{{ asset('template') }}/plugins/bootstrap/js/bootstrap.min.js"></script>
         <script src="https://unpkg.com/feather-icons"></script>
+        <script src="https://cdn.jsdelivr.net/npm/toastr@2.1.4/toastr.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="{{ asset('template') }}/plugins/perfectscroll/perfect-scrollbar.min.js"></script>
         <script src="{{ asset('template') }}/plugins/apexcharts/apexcharts.min.js"></script>
         <script src="{{ asset('template') }}/js/main.min.js"></script>

@@ -13,14 +13,20 @@ class Transaction extends Model
 
     protected $table = "transactions";
     protected $guarded = [];
+    public $timestamps = true;
 
     public function products()
     {
-        return $this->belongsToMany(Product::class);
+        return $this->belongsToMany(Product::class)->withTrashed();
     }
 
     public function employees()
     {
-        return $this->belongsToMany(Employee::class)->withPivot('employee_id');
+        return $this->belongsToMany(Employee::class)->withPivot('status', 'commission', 'product_id')->withTrashed();
+    }
+
+    public function employee_transaction()
+    {
+        return $this->hasMany(Transaction_employee::class);
     }
 }

@@ -2,12 +2,16 @@
 
 @section('content')
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 <style>
     td {
         align-content: center;
     }
 </style>
 
+
+{{-- @dd($bundleArray); --}}
 <div class="page-content">
     <div class="main-wrapper">
         <div class="row">
@@ -15,8 +19,22 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Transaksi</h5>
+
+                        <div class="d-flex justify-content-evenly input-daterange">
+                            <div class="from_date d-flex">                              
+                                <p style="width: 155px">Dari tanggal: </p>
+                                <input type="text" class="form-control mb-3" name="from" id="from_date">
+                            </div>
+                            <div class="to_date d-flex ms-2">
+                                <p style="width: 250px">Hingga tanggal: </p>
+                                <input type="text" class="form-control mb-3" name="to" value="" id="to_date">
+                                <button class="btn btn-primary mb-3 ms-1" type="button" id="search_date"><i class="fa fa-search" aria-hidden="true"></i></i></button>
+                                <button class="btn btn-warning mb-3 ms-1" type="button" id="refresh"><i class="fa fa-refresh" aria-hidden="true"></i></i></button>
+                            </div>
+                        </div>
+
                         <a href="#" id="addRow" data-bs-toggle="modal" data-bs-target="#transactionForm" class="btn btn-primary m-b-md">Tambah Transaksi</a> <br>
-                        <p style="font-size: 16px; font-weight: 600; text-align:center" class="pb-6">Transaksi Tanggal {{ $tgl }}</p>
+                        {{-- <p style="font-size: 16px; font-weight: 600; text-align:center" class="pb-6">Transaksi Tanggal {{ $tgl }}</p> --}}
                         <table id="Tables123" class="display table table-bordered" style="width:100%; margin-top: 40px">
                             <thead>
                                 <tr>
@@ -29,8 +47,8 @@
                                     <th>Detail Komisi</th>
                                 </tr>
                             </thead>
-                            {{-- <tbody>
-                                @foreach ($transaction as $data)    
+                            <tbody id="indexTable">
+                              {{--  @foreach ($transaction as $data)    
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td><b>{{ $data->customer }}</b></td>
@@ -54,8 +72,8 @@
                                             <button class="btn btn-primary" id="commissionDetail" onclick="commissionDetail({{ $data->id }})" data-bs-toggle="modal" data-bs-target="#CommissionModal">Detail Komisi</button>
                                         </td>
                                     </tr>
-                                @endforeach
-                            </tbody> --}}
+                                @endforeach --}}
+                            </tbody>
                         </table>
                     </div>
                 </div>      
@@ -69,23 +87,154 @@
 @include('admin.adminModal.extraWorksmodal')
 
 
-<script>
-    $(document).ready( function () {
-      $('#Tables123').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: '{!! route('transaction.json') !!}',
-        columns: [
-            {data: 'id', name: '#'},
-            {data: 'customer', name: 'NO POL'},
-            {data: 'service', name: 'Jenis Layanan'},
-            {data: 'workers', name: 'Penggarap'},
-            {data: 'total_price', name: 'Total Harga'},
-            {data: 'tanggal', name: 'Tanggal'},
-            {data: 'detail', name: 'Detail Komisi'},
+<script src="https://cdn.jsdelivr.net/npm/toastr@2.1.4/toastr.min.js"></script>
+
+
+@if (Session::get('id'))
+    {{-- @dd(Session('id')) --}}
+    <script>
+
+        $(document).ready(function () {
             
-        ]
+        $('#CommissionModal').modal('show');
+
+
+
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
       });
+
+    $.ajax({
+        type: "post",
+        url: "transaction-detail",
+        data: {
+            id: {!! session('id') !!}
+        },
+        dataType: "json",
+        success: function (response) {
+
+            // console.log($("#transaction_id").val());
+            $("#tgl_transaksi").html(`Tanggal Transaksi: &nbsp; ${response.tanggal_transaksi}`);
+            $("#plat_nomor").html(`NOPOL: &nbsp; ${response.transaction.customer}`);
+            $("#service").html(`Layanan: <ul id="buyservice"></ul>`);
+            $(response.grouped_product).each(function (key, grouped) {
+              // console.log(buy_service);
+                $("#buyservice").append(`<li><b>${grouped.employee_products.service} &nbsp; &nbsp; (Rp ${grouped.employee_products.price.toLocaleString("id-ID")})</b></li>`);
+                // var service = buy_service.service;
+            });
+            $("#totayl_harga").html(`Total: &nbsp; Rp ${response.transaction.total_price.toLocaleString("id-ID")}`);
+            $("#penggarap").html("");
+
+            console.log(service);
+
+            $(response.worker).each(function (key, workers) {
+
+                var append = `<tr><td>${workers.worker}</td><td><ul>`
+                var services = ''
+                // var commission = ''
+                var total_commission = 0
+                $(workers.services).each(function (key, product) {
+                    total_commission += product.commission
+                    services = services +
+                        `<li>${product.employee_products.service}</li>`;
+                    // console.log(`<li>${product.employee_products.service}</li>`);
+                    // commission = commission + ``;
+                });
+                append = append + services + '</ul></td><td>' + 'Rp ' + total_commission
+                    .toLocaleString('id-ID') + '</td></tr>'
+                
+                $("#penggarap").append(append);
+                $("#total_komisi").html(
+                `Rp ${response.transaction.comission.toLocaleString('id-ID')}`);
+            
+            });
+
+            
+        }
+    });
+
+
+        });
+
+    </script>
+@endif
+
+
+<script>
+
+    
+    $(document).ready( function () {
+        
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+        });
+
+        load_data();
+
+        $("#search_date").click(function (e) { 
+            e.preventDefault();
+            var from_date = $("#from_date").val();
+            var to_date = $("#to_date").val();
+            if (from_date != '' && to_date != '') {
+                $("#Tables123").DataTable().destroy();
+                load_data(from_date, to_date);
+            } else {
+                 toastr.error("Harap isi kedua tanggal tanggal tersebut!");
+            }
+        });
+
+        $("#refresh").click(function (e) { 
+            e.preventDefault();
+            $("#from_date").val('');
+            $("#to_date").val('');
+            $("#Tables123").DataTable().destroy();
+            load_data();
+        });
+
+        $('.input-daterange').datepicker({
+            todayBtn: 'linked',
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+        });
+
+        function load_data(from_date = '', to_date = '') {
+            
+            $('#Tables123').DataTable({
+              processing: true,
+              serverSide: true,
+              filter: true,
+              searching: false,
+              ajax: {
+                  type: 'GET',
+                url: '/transaction/json',
+                data: {
+                    from_date: from_date,
+                    to_date: to_date,
+                }
+              },
+              columns: [
+                  {data: 'id', name: '#'},
+                  {data: 'customer', name: 'NO POL'},
+                  {data: 'service', name: 'Jenis Layanan'},
+                  {data: 'workers', name: 'Penggarap'},
+                  {data: 'total_price', name: 'Total Harga'},
+                  {data: 'tanggal', name: 'Tanggal'},
+                  {data: 'detail', name: 'Detail Komisi'},
+                  
+              ]
+            });
+
+        }
+
+
+
+
+
+
     });
 
 

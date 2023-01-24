@@ -16,16 +16,10 @@ class ProductsTableSeeder extends Seeder
     public function run()
     {
         $data = [
-            ['service' => 'Mobil Biasa', 'price' => '45000', 'status' => '0'],
-            ['service' => 'Mobil Besar', 'price' => '50000', 'status' => '0'],
-            ['service' => 'Motor', 'price' => '15000', 'status' => '0'], 
-            ['service' => 'Motor Besar', 'price' => '20000', 'status' => '0'],
-            ['service' => 'Mesin', 'price' => '25000', 'status' => '0'],
-            ['service' => 'CUCI WAX', 'price' => '100000', 'status' => '1'],
-            ['service' => 'Poles Body Kecil', 'price' => '100000', 'status' => '1'],
-            ['service' => 'Poles Body Medium', 'price' => '125000', 'status' => '1'],
-            ['service' => 'Poles Body Besar', 'price' => '150000', 'status' => '1'],
-            ['service' => 'Poles Kaca', 'price' => '50000', 'status' => '1']
+            ['service' => 'Mobil Biasa', 'price' => '45000', 'type_commission' => 'persentase', 'commission_value' => '30', 'status' => '0'],
+            ['service' => 'Mesin', 'price' => '25000', 'type_commission' => 'nominal', 'commission_value' => '7500', 'status' => '0'],
+            ['service' => 'WAX', 'price' => '55000', 'type_commission' => 'nominal', 'commission_value' => '16500', 'status' => '1'],
+            ['service' => 'WAX PRO', 'price' => '72000', 'type_commission' => 'nominal', 'commission_value' => '28000', 'status' => '1'],
         ];
 
         Product::insert($data);

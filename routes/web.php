@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BundleController;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomerController;
@@ -30,11 +31,39 @@ Route::post('/transaction-total', [TransactionController::class, 'total_price_ch
 Route::post('/transaction-store', [TransactionController::class, 'transaction_store'])->name('transaction.store');
 Route::post('/transaction-detail', [TransactionController::class, 'commission_detail'])->name('transaction.detail');
 Route::post('/transaction-extraworkers', [TransactionController::class, 'extra_workers'])->name('transaction.extra');
+Route::post('/transaction-select', [TransactionController::class, 'select_nopol'])->name('transaction.select');
 
 // Employee
 Route::get('/employee', [EmployeeController::class, 'index'])->name('employee.index');
 
+Route::get('/employee/form', [EmployeeController::class, 'form_index'])->name('employee.form');
+Route::post('/employee/form/post', [EmployeeController::class, 'form_store'])->name('employee.post');
+Route::get('/employee/edit/{id}', [EmployeeController::class, 'edit_index'])->name('employee.edit');
+Route::post('/employee/update/{id}', [EmployeeController::class, 'employee_update'])->name('employee.update');
+Route::get('employee/delete/{id}', [EmployeeController::class, 'destroy_employee'])->name('employee.delete');
+Route::get('/employee/restore/{id}', [EmployeeController::class, 'restore'])->name('employee.restore');
+
+Route::get('/employee/json', [EmployeeController::class, 'data'])->name('employee.json');
+Route::get('/employee/detail/{id}', [EmployeeController::class, 'employee_detail'])->name('employee.detail');
+Route::get('/employee-detail/export/{id}', [EmployeeController::class, 'employee_detail_export'])->name('employee.detail.export');
+Route::get('/employee-detail/cetak', [EmployeeController::class, 'employee_pdf'])->name('employee.detail.exportPDF');
+Route::post('/employee/detail-date', [EmployeeController::class, 'employee_date'])->name('employee.date');
+
 // Product
 Route::get('/layanan', [ProductController::class, 'index'])->name('product.index');
+Route::get('/layanan/form', [ProductController::class, 'form_index'])->name('product.form');
+Route::post('/layanan/form/post', [ProductController::class, 'product_store'])->name('product.post');
+Route::get('/layanan/edit/{id}', [ProductController::class, 'edit_index'])->name('product.edit');
+Route::post('/layanan/update/{id}', [ProductController::class, 'product_update'])->name('product.update');
+Route::get('/layanan/delete/{id}', [ProductController::class, 'destroy'])->name('product.delete');
+Route::get('/layanan/restore/{id}', [ProductController::class, 'restore'])->name('product.restore');
+
+// Bundle
+Route::get('/bundle', [BundleController::class, 'index'])->name('bundle.index');
+Route::get('/bundle/form', [BundleController::class, 'form_index'])->name('bundle.form');
+Route::post('/bundle/form/post', [BundleController::class, 'form_store'])->name('bundle.post');
+Route::get('/bundle/edit/{id}', [BundleController::class, 'edit_index'])->name('bundle.edit');
+Route::post('/bundle/update/{id}', [BundleController::class, 'bundle_update'])->name('bundle.update');
+Route::get('bundle/delete/{id}', [BundleController::class, 'destroy_bundle'])->name('bundle.delete');
 
 // Route::post('/customer-import', [CustomerController::class, 'importExcel'])->name('customer.import');

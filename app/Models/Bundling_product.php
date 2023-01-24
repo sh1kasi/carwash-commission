@@ -4,14 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Product extends Model
+class Bundling_product extends Model
 {
     use HasFactory;
-    use SoftDeletes;
 
-    protected $table = "products";
+    protected $table = 'bundling_product';
     protected $guarded = [];
-    protected $dates = ['deleted_at'];
 }

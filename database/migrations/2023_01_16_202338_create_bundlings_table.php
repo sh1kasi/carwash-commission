@@ -13,12 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('employee_transaction', function (Blueprint $table) {
+        Schema::create('bundlings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('employee_id')->constrained('employees')->onDelete('cascade');
-            $table->foreignId('transaction_id')->constrained('transactions')->onDelete('cascade');
-            $table->string('status');
-            $table->bigInteger('commission')->nullable();
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('employees_transaction');
+        Schema::dropIfExists('bundlings');
     }
 };
