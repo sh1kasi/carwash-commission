@@ -17,7 +17,7 @@
 
         <div class="form-group pb-1">
           <label for="exampleInputEmail1"><b>NO PLAT KENDARAAN</b></label> <br>
-          <select style="width: 100%;" class="form-control mt-2 mb-2" id="nopol" aria-describedby="emailHelp" name="nopol"></select>
+          <select style="width: 100%;" class="form-control mt-2 mb-2" id="nopol" style="text-transform: uppercase;" aria-describedby="emailHelp" name="nopol"></select>
           {{-- < name="nopol" class="form-control mt-1 mb-2" id="nopol" aria-describedby="emailHelp" placeholder="Masukkan nomor plat kendaraan"> --}}
         </div>
         
@@ -30,6 +30,7 @@
             </div>
           @endforeach
           <label class="form-check-label mt-3" style="font-size: 15px" for="defaultCheck1"><b>LAYANAN BUNDLING</b></label>
+
           @php
               $bundling_price = 0;
               $product_array = [];
@@ -224,7 +225,7 @@ var selectOption = {
   } 
 
   $(document).ready(function () {
-    
+
     $("#submit").click(function (e) { 
       e.preventDefault();
 
@@ -330,7 +331,7 @@ var selectOption = {
                   extraArray.push(ex_product.id);
                   console.log(extraArray);
                   html += `
-                        <h5 class="modal-title" id="extraWorksModalLabel">Pilih Penggarap ${ex_product.service}</h5>
+                        <h5 class="modal-title" id="extraWorksModalLabel">${ex_product.service}</h5>
                         <input type="hidden" id="product" name="product_id[]" value="${ex_product.id}">
                   `
                   $(response.worker).each(function (key, extra) {

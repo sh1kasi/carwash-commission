@@ -358,16 +358,32 @@ class EmployeeController extends Controller
         foreach ($transaction_employee as $transaksi) {
         }
         // dd($to);
-        if ($from && $to) {
+        if (!empty($request->from)) {
             // dd('a');
-            $daterange = $transaksi->whereDate('created_at', '>=', $from)->whereDate('created_at', '<=', $to)
-            ->groupBy('transaction_id')
-            ->with('transactions')
-            ->with('employee_products')
-            ->get();
+            if ($request->from === $request->to) {
+                      $daterange = Transaction_employee::where('employee_id', $id)
+                      ->whereDate('created_at', $request->from)
+                    //  ->whereDate('created_at', $request->from)
+                     ->groupBy('transaction_id')
+                     ->with('transactions')
+                     ->with('employee_products')->get(); 
+                    // dd($daterange);  
+            } else {
+                $daterange = Transaction_employee::where('employee_id', $id)
+                ->whereDate('created_at', '>=', $request->from)
+                ->whereDate('created_at', '<=', $request->to)
+                ->groupBy('transaction_id')
+                ->with('transactions')
+                ->with('employee_products')
+                ->get();
+            }
         } else {
-            // dd('b');
-            $daterange = $transaction_employee = Transaction_employee::where('employee_id', $id)
+            // $daterange = Transaction_employee::where('employee_id', $id)
+            // ->groupBy('transaction_id')
+            // ->with('transactions')
+            // ->with('employee_products')
+            // ->get();
+            $daterange = Transaction_employee::where('employee_id', $id)
             ->groupBy('transaction_id')
             ->with('transactions')
             ->with('employee_products')

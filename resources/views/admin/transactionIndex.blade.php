@@ -208,6 +208,7 @@
               serverSide: true,
               filter: true,
               searching: false,
+
               ajax: {
                   type: 'GET',
                 url: '/transaction/json',

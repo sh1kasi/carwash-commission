@@ -163,7 +163,7 @@
                             <a class="dropdown-item" href="#"><i data-feather="inbox"></i>Messages</a>
                             <a class="dropdown-item" href="#"><i data-feather="edit"></i>Activities<span class="badge rounded-pill bg-success">12</span></a>
                             <a class="dropdown-item" href="#"><i data-feather="check-circle"></i>Tasks</a>
-                            <div class="dropdown-divider"></div>
+                          <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#"><i data-feather="settings"></i>Settings</a>
                             <a class="dropdown-item" href="#"><i data-feather="unlock"></i>Lock</a>
                             <a class="dropdown-item" href="#"><i data-feather="log-out"></i>Logout</a>
@@ -197,7 +197,7 @@
                   <li class="mt-3 @if (Route::current()->getName() == 'bundle.index')
                     active-page
                 @endif">
-                    <a href={{ route('bundle.index') }}><i data-feather="briefcase"></i>Bundling</a>
+                    <a href={{ route('bundle.index') }}><i data-feather="box"></i>Bundling</a>
                   </li>
                 </ul>
             </div>        
