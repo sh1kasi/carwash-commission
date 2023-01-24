@@ -17,12 +17,12 @@ class Transaction extends Model
 
     public function products()
     {
-        return $this->belongsToMany(Product::class)->withTrashed();
+        return $this->belongsToMany(Product::class)->withTimestamps()->withTrashed();
     }
 
     public function employees()
     {
-        return $this->belongsToMany(Employee::class)->withPivot('status', 'commission', 'product_id')->withTrashed();
+        return $this->belongsToMany(Employee::class)->withPivot('status', 'commission', 'product_id')->withTimestamps()->withTrashed();
     }
 
     public function employee_transaction()

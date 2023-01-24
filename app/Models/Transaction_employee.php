@@ -14,6 +14,7 @@ class Transaction_employee extends Model
 
     protected $table = 'employee_transaction';
     protected $guarded = [];
+    public $timestamps = true;
 
     public function employee_products()
     {

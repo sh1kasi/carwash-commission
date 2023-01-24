@@ -75,14 +75,20 @@ class BundleController extends Controller
             $bundled[] = $array->product_id;
         }
 
+        $update_value = implode(',',$bundled);
+        // $updated = explode(',',$update_value);
+        // dd($updated); 
+
         // dd($bundled);
 
-        return view('admin.bundlingEdit', compact('bundle', 'product', 'bundled'));
+        return view('admin.bundlingEdit', compact('bundle', 'product', 'bundled', 'update_value'));
     }
 
     public function bundle_update(Request $request, $id)
     {
+
         $bundle = Bundling::find($id);
+        $products_id = $request->servicesCheckbox;
 
         $this->validate($request, [
             'name' => 'required',
@@ -92,6 +98,9 @@ class BundleController extends Controller
         $name = $request->name;
         $products_id = $request->servicesCheckbox;
         $product = Product::whereIn('id', $products_id)->get();
+        $detach_service = explode(',',$request->update_service);
+
+        // dd($detach_service);
 
         $bundle_price = 0;
         foreach ($product as $prod_id) {
@@ -101,6 +110,8 @@ class BundleController extends Controller
         $bundle->name = $name;
         $bundle->total_price = $bundle_price;
         $bundle->save();
+        $bundle->products()->detach($detach_service);
+        $bundle->products()->attach($products_id);
         // dd($bundle);
         
         return redirect('/bundle')->with('success', 'Berhasil mengedit Bundle');

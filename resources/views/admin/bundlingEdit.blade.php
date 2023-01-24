@@ -1,6 +1,8 @@
 @extends('layouts.admin')
 
 @section('content')
+
+{{-- @dd($update_value); --}}
     
 <div class="page-content">
     <div class="main-wrapper">
@@ -36,6 +38,7 @@
                                                 {{ 'checked' }}
                                             @endif
                                         type="checkbox" name="servicesCheckbox[]" value="{{ $service->id }}" id="servicesCheckbox">
+                                        <input type="hidden" name="update_service" value="{{ $update_value }}">
                                         <label class="form-check-label ps-2" style="font-size: 15px" for="defaultCheck1">{{ $service->service }} (@currency($service->price))</label>
                                       </div>
                                     @endforeach

@@ -13,6 +13,7 @@ use Yajra\Datatables\Datatables;
 use App\Http\Controllers\Controller;
 use App\Models\Bundling_product;
 use App\Models\Transaction_employee;
+use Illuminate\Database\Events\TransactionCommitted;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -141,13 +142,16 @@ class TransactionController extends Controller
         $bundling = $request->bundling;
         // dd($bundling);
 
-        $product_bundling = Bundling_product::whereIn('bundling_id', $bundling)->get();
-        // dd($product_bundling);
-        $bundling_array = [];
-        foreach ($product_bundling as $data) {
-            array_push($bundling_array, $data->product_id);
-        }
         // dd($bundling_array);
+
+        if (!empty($request->bundling)) {
+            $product_bundling = Bundling_product::whereIn('bundling_id', $bundling)->get();
+            // dd($product_bundling);
+            $bundling_array = [];
+            foreach ($product_bundling as $data) {
+                array_push($bundling_array, $data->product_id);
+            }
+        }
 
 
         
@@ -207,12 +211,12 @@ class TransactionController extends Controller
         $total_price = $request->total_price;
         $bundling = $request->bundling;
 
-        $product_bundling = Bundling_product::whereIn('bundling_id', $bundling)->get();
-        // dd($product_bundling);
-        $bundling_array = [];
-        foreach ($product_bundling as $data) {
-            array_push($bundling_array, $data->product_id);
-        }
+        // $product_bundling = Bundling_product::whereIn('bundling_id', $bundling)->get();
+        // // dd($product_bundling);
+        // $bundling_array = [];
+        // foreach ($product_bundling as $data) {
+        //     array_push($bundling_array, $data->product_id);
+        // }
 
         // dd($request->service);
         // dd($bundling_array);
@@ -1041,15 +1045,17 @@ class TransactionController extends Controller
 
     public function select_nopol(Request $request)
     {
-        $customer = Transaction::orderBy('customer', 'ASC');
+        $customer = Transaction::OrderBy('customer', 'ASC');
+        $search = $request->search;
 
-        if ( $search = $request->search) {
-            $customer->where('customer', 'LIKE', "%{$search}%")->groupBy('customer');
-
+        if ($search) {
+            $customer->where('customer', 'LIKE', "%{$search}%");
         }
 
+        // $data = $customer->get();
+
         // $customer->get();
-        return response()->json($customer->get());
+        return response()->json($customer->groupBy('customer')->get());
 
     }
 }

@@ -205,14 +205,18 @@ class EmployeeController extends Controller
         }
 
         if (!empty($request->from)) {
+            // dd('a');
             if ($request->from === $request->to) {
-                      $transaction_employee = $key->whereDate('created_at', $request->from)
+                      $transaction_employee = Transaction_employee::where('employee_id', $id)
+                      ->whereDate('created_at', $request->from)
+                    //  ->whereDate('created_at', $request->from)
                      ->groupBy('transaction_id')
                      ->with('transactions')
-                     ->with('employee_products')
-                     ->whereDate('created_at', $request->from)->get();
+                     ->with('employee_products')->get(); 
+                    // dd($transaction_employee);  
             } else {
-                $transaction_employee = $key->whereDate('created_at', '>=', $request->from)
+                $transaction_employee = Transaction_employee::where('employee_id', $id)
+                ->whereDate('created_at', '>=', $request->from)
                 ->whereDate('created_at', '<=', $request->to)
                 ->groupBy('transaction_id')
                 ->with('transactions')
@@ -220,12 +224,19 @@ class EmployeeController extends Controller
                 ->get();
             }
         } else {
+            // $transaction_employee = Transaction_employee::where('employee_id', $id)
+            // ->groupBy('transaction_id')
+            // ->with('transactions')
+            // ->with('employee_products')
+            // ->get();
             $transaction_employee = Transaction_employee::where('employee_id', $id)
             ->groupBy('transaction_id')
             ->with('transactions')
             ->with('employee_products')
             ->get();
         }
+
+        // dd($request);
 
         // if ($from && $to) {
         //     // dd('a');
@@ -234,7 +245,7 @@ class EmployeeController extends Controller
         //     ->with('transactions')
         //     ->with('employee_products')
         //     ->whereDate('created_at', '<=', $to)->get();
-        //     // $transaction_product = Transaction_employee::where('employee_id', $id)->get();
+        //     // $  = Transaction_employee::where('employee_id', $id)->get();
 
         //     // dd($transaction);
         // } else {
