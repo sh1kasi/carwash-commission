@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 use App\Http\Controllers\Controller;
 use App\Models\Bundling_product;
+use App\Models\Product_transaction;
 use App\Models\Transaction_employee;
 use Illuminate\Database\Events\TransactionCommitted;
 use Illuminate\Support\Facades\Validator;
@@ -26,30 +27,15 @@ class TransactionController extends Controller
     {
         // dd($request);
 
+        $currentDate = Carbon::now()->format('Y-m-d');
+
+        // dd(Carbon::now()->toTimeString());
 
         // dd($to);
 
         $transaction = Transaction::get();
         $product = Product::get();
         $bundle = Bundling::get();
-
-        // $bundleVal = [];
-        // $bundleArray = 0;
-        // foreach ($bundle as $value) {
-        //     $bundling_product = Bundling_product::where('bundling_id', $value->id)->get();
-        //     foreach ($bundling_product as $service) {
-        //         // dd($service->product_id);
-        //         array_push($bundleVal, $service->id);
-        //         $bundleArray = implode(',',$bundleVal);
-        //     }
-        // }
-        // dd($service->id);
-        // if (count($bundle) > 0) {
-        //     # code...
-        // }
-
-        // dd($product_arr);
-        
 
         $arr = [];
         $bundleArray = 0;
@@ -74,7 +60,7 @@ class TransactionController extends Controller
         // dd($date);
         // dd($transaction->created_at->format('d'));
 
-        return view('admin.transactionIndex', compact('transaction', 'product', 'employees', 'tgl', 'bundle', 'bundleArray'));
+        return view('admin.transactionIndex', compact('transaction', 'product', 'employees', 'tgl', 'bundle', 'bundleArray', 'currentDate'));
     }
 
     
@@ -128,6 +114,10 @@ class TransactionController extends Controller
         ->addColumn('total_price', function($row) {
             
             return rupiah($row->total_price);
+        })
+        ->addColumn('aksi', function($row) {
+            
+            return "<a href='/transaction/edit/$row->id' type='button' class='btn btn-primary' id='transactionEdit'><i>Edit Transaksi</i></a>";
         })
         ->escapeColumns([])
         ->make(true);
@@ -205,21 +195,19 @@ class TransactionController extends Controller
 
     public function transaction_store(Request $request)
     {
+        // dd(Carbon::parse($request->date));
+        $currentTime = Carbon::now()->toTimeString();
+        // dd($currentTime);
+
         $nopol = $request->nopol;
+        $date = Carbon::parse($request->date)->setTimeFromTimeString($currentTime);
         // $service = $request->service;
         $employee = $request->employee;
         $total_price = $request->total_price;
         $bundling = $request->bundling;
 
-        // $product_bundling = Bundling_product::whereIn('bundling_id', $bundling)->get();
-        // // dd($product_bundling);
-        // $bundling_array = [];
-        // foreach ($product_bundling as $data) {
-        //     array_push($bundling_array, $data->product_id);
-        // }
+        // dd($date);
 
-        // dd($request->service);
-        // dd($bundling_array);
 
         $validator = Validator::make($request->all(), [
             'nopol' => 'required',
@@ -337,6 +325,8 @@ class TransactionController extends Controller
                 $transaction->customer = $nopol;
                 $transaction->total_price = $total_price;
                 $transaction->comission = $commission_total;
+                $transaction->created_at = $date;
+                // dd($transaction);
                 $transaction->save();
             
                 if ($bundling != null) {
@@ -511,7 +501,7 @@ class TransactionController extends Controller
             
             
                 // $product_extra = Product::whereIn('')
-// dd($t        otal_workers);
+                // dd($total_workers);
             
                 $employee_commission = $ggg / $total_workers;
                 // dd($employee_commission);
@@ -553,6 +543,279 @@ class TransactionController extends Controller
                 }
         
             }
+    }
+
+    public function edit_index($id)
+    {
+
+        $transaction = Transaction::find($id);
+        
+        // dd($transaction);
+        
+        $product = Product::get();
+        $bundle = Bundling::get();
+        $employees = Employee::get();
+
+        // $selected_employee = Transaction_employee::where('transaction_id', $id)->groupBy('employee_id')->get();
+
+        $productArray = [];
+        $bundleArray = [];
+        $employeeArray = [];
+        $employee_update = [];
+        foreach ($transaction->products as $service) {
+            array_push($productArray, $service->id);
+        }
+        foreach ($bundle as $bundling) {
+            array_push($bundleArray, $bundling->id);
+        }
+        foreach ($transaction->employees as $worker) {
+            array_push($employeeArray, $worker->id);
+        }
+
+        $employee_value = implode(',',$employeeArray);
+        $product_value = implode(',',$productArray);
+        // dd($product_value);
+        // dd($employeeArray);
+        // dd($employee_update);
+
+        return view('admin.transactionEdit', compact('product', 'bundle', 'employees', 'productArray', 'bundleArray', 'employeeArray', 'transaction', 'employee_value', 'product_value'));
+    }
+
+    public function transaction_update($id, Request $request)
+    {
+        // $this->validate($request, [
+        //     'customer' => 'required',
+        //     'servicesCheckbox' => 'required',
+        //     'employee' => 'required',
+        // ]);
+
+        // dd($request);
+
+
+        $transaction = Transaction::find($id);
+        $bundling = $request->bundlingsCheckbox;
+        $nopol = $request->nopol;
+        $employee = $request->employee;
+        $date = Carbon::parse($request->date)->setTimeFromTimeString($transaction->created_at->toTimeString());
+        $total_price = $request->total_price;
+        $detach_employee = explode(',',$request->employee_detach);
+        $detach_service = explode(',',$request->product_detach);
+
+
+
+        // dd($date);
+
+        if (!empty($bundling) && !empty($request->service)) {
+            $arrayService = [];
+            $product_bundling = Bundling_product::whereIn('bundling_id', $bundling)->get();
+            // dd($product_bundling);
+             $bundling_array = [];
+            foreach ($product_bundling as $data) {
+                array_push($bundling_array, $data->product_id);
+            }
+            foreach ($request->service as $service_id) {
+                array_push($bundling_array, $service_id);
+            }
+            $service = array_unique($bundling_array);
+        } elseif (!empty($bundling)) {
+            $product_bundling = Bundling_product::whereIn('bundling_id', $bundling)->get();
+            // dd($product_bundling);
+             $bundling_array = [];
+            foreach ($product_bundling as $data) {
+                array_push($bundling_array, $data->product_id);
+            }
+            $service = array_unique($bundling_array);
+        } else {
+            $service = $request->service;
+        }
+
+
+        $selected_product = Product::whereIn('id', $service)->get();
+
+        // dd($selected_product);   
+        
+        $normal_product = Product::whereIn('id', $service)->where('status', '0')->get();
+        $extra_product = Product::whereIn('id', $service)->where('status', '1')->get();
+        // dd(count($normal_product));
+        
+        if (count($normal_product) != 0 && count($extra_product) != 0) {
+            // dd('a');
+            $product = Product::whereIn('id', $service)->where('status', '0')->get();     
+        } elseif (count($normal_product) != 0) {
+            // dd('b');
+            $product = Product::whereIn('id', $service)->where('status', '0')->get();     
+        } else {
+            // dd('c');
+            $product = Product::whereIn('id', $service)->get();
+        }
+    
+        // dd($product);
+
+    
+        $total_workers = count($employee);
+        // dd($ggg);
+        // dd($ggg / $total_workers);
+
+        $commission_total = 0;
+        foreach ($selected_product as $selprod) {
+        
+            if ($selprod->type_commission == 'persentase') {
+                $commiss = $selprod->price * $selprod->commission_value / 100;
+                // dd($commiss);
+                $commission_total += $commiss;
+            } else {
+                $commission_total += $selprod->commission_value;
+            }
+        
+        }
+
+            $transaction->customer = $nopol;
+            $transaction->total_price = $total_price;
+            $transaction->comission = $commission_total;
+            $transaction->created_at = $date;
+            $transaction->save();
+
+            if ($bundling != null) {
+                $transaction->products()->detach($detach_service);
+                $transaction->products()->attach(array_unique($service));
+            } elseif ($bundling != null && $service != null) {
+                $transaction->products()->detach($detach_service);
+                $transaction->products()->attach(array_unique($service));
+            } else {
+                $transaction->products()->detach($detach_service);
+                $transaction->products()->attach(array_unique($service));
+            }
+
+            // dd('test product');
+
+            $commission = 0;
+            $ggg = 0;
+            // dd(count($normal_product));
+            $transaction->employees()->detach($detach_employee);
+            if (count($extra_product) != 0 && count($normal_product) != 0) {
+                
+                foreach ($normal_product as $layanan) {
+                    // dd($layanan->type_commission);
+                    $commission += $layanan->price;
+                    // dd($layanan->type_commission);
+
+
+                    if ($layanan->type_commission == 'nominal') {
+                        $persenan = $layanan->commission_value / $layanan->price * 100;
+                        $commission = $layanan->price * $persenan / 100;
+                        $ggg = $commission;
+                        // dd($commission);
+                    } elseif ($layanan->type_commission == 'nominal' && $layanan->type_commission == 'persentase') {
+                        // dd('a');
+                    } else {
+                        // $commission += $layanan->price * $layanan->commission_value / 100; 
+                        $commission = $layanan->commission_value / 100 * $layanan->price; 
+                        $ggg = $commission;
+                    }
+                    foreach ($employee as $worker) {
+
+                        // $transaction->employees()->detach($detach_employee);
+                        $transaction->employees()->attach($worker, ['status' => 'normal', 'commission' => $commission / $total_workers, 'product_id' => $layanan->id]);
+                    
+
+                    }
+                
+                    // $commission += $commission; 
+                }
+
+            } elseif (count($extra_product) != 0 && count($normal_product) == 0) {
+                
+                foreach ($extra_product as $layanan) {
+                    // dd($layanan->type_commission);
+                    $commission += $layanan->price;
+                    // dd($layanan->type_commission);
+
+
+                    if ($layanan->type_commission == 'nominal') {
+                        $persenan = $layanan->commission_value / $layanan->price * 100;
+                        $commission = $layanan->price * $persenan / 100;
+                        $ggg = $commission;
+                        // dd($commission);
+                    } elseif ($layanan->type_commission == 'nominal' && $layanan->type_commission == 'persentase') {
+                        // dd('a');
+                    } else {
+                        // $commission += $layanan->price * $layanan->commission_value / 100; 
+                        $commission = $layanan->commission_value / 100 * $layanan->price; 
+                        $ggg = $commission;
+                    }
+                    foreach ($employee as $worker) {
+
+                        // $transaction->employees()->detach($detach_employee);
+                        $transaction->employees()->attach($worker, ['status' => 'extra', 'commission' => $commission / $total_workers, 'product_id' => $layanan->id]);
+                    
+
+                    }
+                
+                    // $commission += $commission; 
+                }
+
+            } else {
+
+                foreach ($normal_product as $layanan) {
+                    // dd($layanan->type_commission);
+                    $commission += $layanan->price;
+                    // dd($layanan->type_commission);
+
+
+                    if ($layanan->type_commission == 'nominal') {
+                        $persenan = $layanan->commission_value / $layanan->price * 100;
+                        $commission = $layanan->price * $persenan / 100;
+                        $ggg = $commission;
+                        // dd($commission);
+                    } elseif ($layanan->type_commission == 'nominal' && $layanan->type_commission == 'persentase') {
+                        // dd('a');
+                    } else {
+                        // $commission += $layanan->price * $layanan->commission_value / 100; 
+                        $commission = $layanan->commission_value / 100 * $layanan->price; 
+                        $ggg = $commission;
+                    }
+                    foreach ($employee as $worker) {
+                        // dd(array_unique($detach_employee));
+                        // $transaction->employees()->detach(array_unique($detach_employee));
+                        $transaction->employees()->attach($worker, ['status' => 'normal', 'commission' => $commission / $total_workers, 'product_id' => $layanan->id]);
+                    
+
+                    }
+                
+                    // $commission += $commission; 
+                }
+
+            }
+
+            $transaksi = Transaction::where('id', $transaction->id)->first();
+                // dd($transaksi->products);
+                $extra_product = $transaksi->products()->where('status', '1')->get();
+                // dd($extra_product);
+            
+                foreach ($extra_product as $extra) {
+                }
+                
+                $employees = Employee::whereIn('id', $employee)->get();
+
+                $tambahan = $transaksi->products()->where('status', '1')->exists();
+                if (count($extra_product) != 0 && count($normal_product) != 0) {
+                    return redirect('/transaction')
+                    ->with('data', $transaction)
+                    ->with('worker', $employees)
+                    ->with('tambahan', $tambahan)
+                    ->with('transaction_id', $id)
+                    ->with('extra_product', $extra_product);
+                } else {
+                    // return redirect('/transaction')
+                    // ->with('data', $transaction)
+                    // ->with('worker', $employees);
+                    return redirect('/transaction')->with(['id' => $id]);
+                }
+
+
+
+        // dd("bisa setengah");
+
     }
 
     public function commission_detail(Request $request)
@@ -823,6 +1086,8 @@ class TransactionController extends Controller
 
     public function extra_workers(Request $request)
     {
+
+        // dd($request);
 
         $extra = $request->extra;
         $product_extra = $request->product_extra;

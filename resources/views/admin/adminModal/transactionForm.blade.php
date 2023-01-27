@@ -1,6 +1,6 @@
 <!-- Modal -->
 
-
+{{-- @dd(count($bundle)) --}}
 
 <div class="modal fade" id="transactionForm" role="dialog" aria-labelledby="transactionFormLabel" aria-hidden="true">
   <div class="modal-dialog" style="max-width: 700px" role="document">
@@ -15,6 +15,10 @@
 
         <ul id="err_list"></ul>
 
+        <div class="form-group pb-1 input-daterange">
+          <label for="exampleInputEmail1"><b>Tanggal</b></label> <br>
+          <input style="width: 45%;" value="{{ $currentDate }}" class="form-control mt-2 mb-2" id="date" style="text-transform: uppercase;" aria-describedby="emailHelp" name="date" />
+        </div>
         <div class="form-group pb-1">
           <label for="exampleInputEmail1"><b>NO PLAT KENDARAAN</b></label> <br>
           <select style="width: 100%;" class="form-control mt-2 mb-2" id="nopol" style="text-transform: uppercase;" aria-describedby="emailHelp" name="nopol"></select>
@@ -29,29 +33,32 @@
               <label class="form-check-label ps-2" style="font-size: 15px" for="defaultCheck1">{{ $service->service }} (@currency($service->price))</label>
             </div>
           @endforeach
-          <label class="form-check-label mt-3" style="font-size: 15px" for="defaultCheck1"><b>LAYANAN BUNDLING</b></label>
-
-          @php
-              $bundling_price = 0;
-              $product_array = [];
-              $bundleVal = 0;
-          @endphp
-          @foreach ($bundle as $bundling)
-          <div class="form-group col-md-6">
-            <input class="form-check-input cbbundling" type="checkbox" name="bundlingsCheckbox" onclick="servicesCheckbox({{ $bundling->id }})" value="{{ $bundling->id }}" id="bundlingsCheckbox">
-            <label class="form-check-label ps-2" style="font-size: 15px" for="defaultCheck1">{{ $bundling->name }} (@currency($bundling->total_price))
-              @foreach ($bundling->products as $item)
-              {{-- @dd($item); --}}
-              <ul style="margin-bottom: 0px !important">
-                {{-- <li>{{ $item->id }}</li> --}}
-                <input type="hidden" id="product_id" value="{{ $item->id }}">
-                <li>{{ $item->service }}</li>
-              </ul>
-              @endforeach
-                  </label>
-                </div>
-                {{-- <input type="hidden" id="bundleArray" name="bundlingArray[]" value="{!! json_encode($bundleArray) !!}"> --}}
-          @endforeach
+          @if (count($bundle) != 0)
+              {{-- <h5 class="mt-2">Tidak ada data</h5> --}}
+              <label class="form-check-label mt-3" style="font-size: 15px" for="defaultCheck1"><b>LAYANAN BUNDLING</b></label>
+              {{-- <h6>Tidak ada data!</h6> --}}
+              @php
+                  $bundling_price = 0;
+                  $product_array = [];
+                  $bundleVal = 0;
+              @endphp
+                  @foreach ($bundle as $bundling)
+                  <div class="form-group col-md-6">
+                    <input class="form-check-input cbbundling" type="checkbox" name="bundlingsCheckbox" onclick="servicesCheckbox({{ $bundling->id }})" value="{{ $bundling->id }}" id="bundlingsCheckbox">
+                    <label class="form-check-label ps-2" style="font-size: 15px" for="defaultCheck1">{{ $bundling->name }} (@currency($bundling->total_price))
+                      @foreach ($bundling->products as $item)
+                      {{-- @dd($item); --}}
+                      <ul style="margin-bottom: 0px !important">
+                        {{-- <li>{{ $item->id }}</li> --}}
+                        <input type="hidden" id="product_id" value="{{ $item->id }}">
+                        <li>{{ $item->service }}</li>
+                      </ul>
+                      @endforeach
+                          </label>
+                        </div>
+                        {{-- <input type="hidden" id="bundleArray" name="bundlingArray[]" value="{!! json_encode($bundleArray) !!}"> --}}
+                  @endforeach
+          @endif
         </div>
 
         <div class="row pt-2 pb-3" style="border-bottom: 1px solid #c5bebefa"> 
@@ -86,11 +93,12 @@
 
 <script>
 
+
   // console.log($(".cbbundling").val());
 
 var selectOption = {
         placeholder: "Pilih Plat Nomor",
-        minimumInputLength: 3,
+        minimumInputLength: 1,
         allowClear: true,
         tags:true,
         theme: "bootstrap-5",
@@ -232,6 +240,7 @@ var selectOption = {
       var nopol = $("#nopol").val();
       var service = $("#servicesCheckbox").val();
       var employee = $("#employee").val();
+      var date = $("#date").val();
       var total_price = $("#total_price").val();
       var commission = $("#servicesCheckbox").data('commission');
       var commiss_check = $("#servicesCheckbox").data('type');
@@ -290,6 +299,7 @@ var selectOption = {
           service: serviceArray,
           employee: employeeArray,
           total_price: total_price,
+          date: date,
           bundling: bundleArray,
           commiss_check: commiss_check,
         },

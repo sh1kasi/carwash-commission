@@ -177,8 +177,7 @@
                    swal("Layanan "+name+" berhasil terhapus" , {
                    icon: "success",
                    buttons: false,
-                   });
-                   
+                   });                   
                }
            });
 

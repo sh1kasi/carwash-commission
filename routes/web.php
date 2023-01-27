@@ -5,6 +5,7 @@ use App\Models\Transaction;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\KasbonController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TransactionController;
 
@@ -26,6 +27,8 @@ Route::get('/', function () {
 
 // Transaction
 Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction.index');
+Route::get('/transaction/edit/{id}', [TransactionController::class, 'edit_index'])->name('transaction.edit');
+Route::post('/transaction/update/{id}', [TransactionController::class, 'transaction_update'])->name('transaction.update');
 Route::get('/transaction/json', [TransactionController::class, 'data'])->name('transaction.json');
 Route::post('/transaction-total', [TransactionController::class, 'total_price_check'])->name('transaction.totalCheck');
 Route::post('/transaction-store', [TransactionController::class, 'transaction_store'])->name('transaction.store');
@@ -65,5 +68,11 @@ Route::post('/bundle/form/post', [BundleController::class, 'form_store'])->name(
 Route::get('/bundle/edit/{id}', [BundleController::class, 'edit_index'])->name('bundle.edit');
 Route::post('/bundle/update/{id}', [BundleController::class, 'bundle_update'])->name('bundle.update');
 Route::get('bundle/delete/{id}', [BundleController::class, 'destroy_bundle'])->name('bundle.delete');
+
+// Kasbon
+Route::get('/kasbon', [KasbonController::class, 'index'])->name('kasbon.index');
+Route::get('/kasbon/json', [KasbonController::class, 'data'])->name('kasbon.data');
+Route::post('/kasbon/input', [KasbonController::class, 'input_kasbon'])->name('kasbon.input');
+Route::post('/kasbon/detail', [KasbonController::class, 'kasbon_detail'])->name('kasbon.detail');
 
 // Route::post('/customer-import', [CustomerController::class, 'importExcel'])->name('customer.import');

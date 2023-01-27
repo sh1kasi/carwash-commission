@@ -44,7 +44,7 @@
 <body>
 
     @if ($from == null && $to == null)
-        <h1></h1>
+        <h1>Detail Komisi {{ $employee->name }} ({{ $tanggal_terlama }} &nbsp; - &nbsp; {{ $tanggal_terbaru }})</h1>
     @else
     <h1>Detail Komisi {{ $employee->name }} ({{ $from }} &nbsp; - &nbsp; {{ $to }})</h1>
     @endif
@@ -84,7 +84,7 @@
                         // $commission_total +=/ $product->commission;
                         // dd($commission_total)
                         @endphp
-                        <li>{{ $product->employee_products->service }}</li>
+                        <li>{{ $product->employee_products->service }} (@currency($product->commission))</li>
                         @php
                         $total_commission += $product->commission;
                         @endphp

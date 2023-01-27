@@ -10,6 +10,7 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Imports\CustomersImport;
 use App\Http\Controllers\Controller;
+use App\Models\Kasbon;
 use App\Models\Transaction_employee;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -44,16 +45,33 @@ class EmployeeController extends Controller
 
     public function form_store(Request $request)
     {
-
+        
         $this->validate($request, [
             'name'=> 'required',
+            // 'role'=> 'required',
         ]);
+        // return $request;
 
         $name = $request->name;
+        $role = $request->role;
+        $kasbon = $request->kasbon;
         
         $employee = new Employee;
         $employee->name = $name;
+        $employee->role = $role;
+        $employee->kasbon = $kasbon;
+        // dd($employee);
         $employee->save();
+        // dd($employee->created_at->translatedFormat('j F Y - H:i:s'));
+        
+        if ($employee->role != 'Training') {
+            $kasbon = new Kasbon;
+            $kasbon->employee_id = $employee->id;
+            $kasbon->promoted_date = $employee->created_at;
+            $kasbon->reset_date = $employee->created_at;
+            $kasbon->sisa_nominal = $employee->kasbon;
+            $kasbon->save();
+        }
 
         return redirect('/employee')->with('success', 'Berhasil Menambahkan Pegawai');
     }
@@ -69,15 +87,34 @@ class EmployeeController extends Controller
     public function employee_update(Request $request, $id)
     {
         $employee = Employee::find($id);
+        $kasbon_check = Kasbon::where('employee_id', $id)->first();
+        // dd($request);
         
         $this->validate($request, [
             'name'=> 'required',
         ]);
 
         $name = $request->name;
+        $role = $request->role;
+        $kasbon = $request->kasbon;
 
         $employee->name = $name;
+        $employee->role = $role;
+        $employee->kasbon = $kasbon;
         $employee->save();
+
+        // dd($employee->id);
+        
+        // if ($request->role != 'Training') {
+        //     if (!$kasbon_check) {
+        //         $kasbon = new Kasbon;
+        //     }
+        //     $kasbon->employee_id = $employee->id;
+        //     $kasbon->promoted_date = $employee->created_at;
+        //     $kasbon->reset_date = $employee->created_at;
+        //     $kasbon->sisa_nominal = $employee->kasbon;
+        //     $kasbon->save();
+        // }
 
         return redirect('/employee')->with('success', 'Berhasil Mengedit Pegawai');
     }
@@ -135,7 +172,7 @@ class EmployeeController extends Controller
 
         $from = $request->from;
         $to = $request->to;
-        // dd($id);
+        // dd($from);
 
 
         $transaction_employee = Transaction_employee::where('employee_id', $id)
@@ -145,6 +182,10 @@ class EmployeeController extends Controller
         ->get();
 
         
+
+        // dd($transaction_employee->last());
+        
+
         $transaction_product = Transaction_employee::where('employee_id', $id)->get();
 
         // foreach ($transaction_employee as $data) {
@@ -356,6 +397,7 @@ class EmployeeController extends Controller
 
 
         foreach ($transaction_employee as $transaksi) {
+            
         }
         // dd($to);
         if (!empty($request->from)) {
@@ -390,6 +432,9 @@ class EmployeeController extends Controller
             ->get();
         }
 
+        $tanggal_terlama = $transaction_employee->first()->created_at->format('Y-m-d');
+        $tanggal_terbaru = $transaction_employee->last()->created_at->format('Y-m-d');
+
         // dd(Carbon::now());
 
         // if ($daterange != null) {
@@ -398,6 +443,8 @@ class EmployeeController extends Controller
 
         view()->share([
             'daterange' => $daterange,
+            'tanggal_terlama' => $tanggal_terlama,
+            'tanggal_terbaru' => $tanggal_terbaru,
             'transaction_product' => $transaction_product,
             'id' => $id,
             'employee' => $employee,

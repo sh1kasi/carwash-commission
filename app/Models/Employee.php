@@ -13,4 +13,9 @@ class Employee extends Model
 
     protected $table = 'employees';
     protected $guarded = [];
+
+    public function kasbons()
+    {
+        return $this->belongsToMany(Employee::class);
+    }
 }

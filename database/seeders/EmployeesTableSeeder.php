@@ -16,17 +16,17 @@ class EmployeesTableSeeder extends Seeder
     public function run()
     {
         $data = [
-            ['name' => 'Argya'],
-            ['name' => 'Hendra'],
-            ['name' => 'Deni'],
-            ['name' => 'Taufik'],
-            ['name' => 'Aris'],
-            ['name' => 'Miftah'],
-            ['name' => 'Nurdin'],
-            ['name' => 'Indrawan'],
-            ['name' => 'Andreas'],
-            ['name' => 'Arif'],
-            ['name' => 'Rohman']
+            ['name' => 'Argya', 'role' => 'Tetap', 'kasbon' => '500000'],
+            ['name' => 'Hendra', 'role' => 'Tetap', 'kasbon' => '500000'],
+            ['name' => 'Deni', 'role' => 'Tetap', 'kasbon' => '500000'],
+            ['name' => 'Taufik', 'role' => 'Tetap', 'kasbon' => '500000'],
+            ['name' => 'Aris', 'role' => 'Tetap', 'kasbon' => '500000'],
+            ['name' => 'Miftah', 'role' => 'Tetap', 'kasbon' => '500000'],
+            ['name' => 'Nurdin', 'role' => 'Tetap', 'kasbon' => '500000'],
+            ['name' => 'Indrawan', 'role' => 'Tetap', 'kasbon' => '500000'],
+            ['name' => 'Andreas', 'role' => 'Tetap', 'kasbon' => '500000'],
+            ['name' => 'Arif', 'role' => 'Tetap', 'kasbon' => '500000'],
+            ['name' => 'Rohman', 'role' => 'Tetap', 'kasbon' => '500000']
         ];
 
         Employee::insert($data);

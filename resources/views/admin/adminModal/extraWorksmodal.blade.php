@@ -103,8 +103,8 @@ function extraWorkers(id, extraId) {
                 $(workers.services).each(function (key, product) {
                     total_commission += product.commission
                     services = services +
-                        `<li>${product.employee_products.service}</li>`;
-                    console.log(`<li>${product.employee_products.service}</li>`);
+                        `<li>${product.employee_products.service} (Rp ${product.commission.toLocaleString('id-ID')})</li>`;
+                    // console.log(`<li>${product.employee_products.service}</li>`);
                     // commission = commission + ``;
                 });
                 append = append + services + '</ul></td><td>' + 'Rp ' + total_commission

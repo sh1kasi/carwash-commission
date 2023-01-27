@@ -67,7 +67,7 @@
                                                             // $commission_total +=/ $product->commission;
                                                             // dd($commission_total)
                                                         @endphp
-                                                        <li>{{ $product->employee_products->service }}</li>
+                                                        <li>{{ $product->employee_products->service }} (@currency($product->commission))</li>
                                                         @php
                                                             $total_commission += $product->commission;
                                                         @endphp

@@ -17,6 +17,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Nama</th>
+                                    {{-- <th>Status</th> --}}
                                     <th>Total Mengerjakan</th>
                                     <th>Detail</th>
                                     <th>Aksi</th>
@@ -27,9 +28,10 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $data->name }}</td>
-                                        <td>{{ $transaction_employee->where('employee_id', $data->id)->groupBy('transaction_id')->count() }}</td>
+                                        {{-- <td>{{ $data->role }}</td> --}}
+                                        <td>{{ $transaction_employee->where('employee_id', $data->id)->count() }}</td>
                                         @php
-                                           $count = $transaction_employee->where('employee_id', $data->id)->groupBy('transaction_id')->count();
+                                           $count = $transaction_employee->where('employee_id', $data->id)->count();
                                         @endphp
                                         {{-- <input type="hidden" id="WorkedCount" value="{{ $transaction_employee->where('employee_id', $data->id)->count() }}"> --}}
                                         <td align="center"><a href="/employee/detail/{{ $data->id }}" id="detail"
@@ -68,6 +70,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Nama</th>
+                                    {{-- <th>Status</th> --}}
                                     <th>Total Mengerjakan</th>
                                     <th>Detail</th>
                                     <th>Aksi</th>
@@ -78,9 +81,10 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $data->name }} (Terhapus)</td>
-                                        <td>{{ $transaction_employee->where('employee_id', $data->id)->groupBy('transaction_id')->count() }}</td>
+                                        {{-- <td>{{ $data->role }} </td> --}}
+                                        <td>{{ $transaction_employee->where('employee_id', $data->id)->count() }}</td>
                                         @php
-                                           $count = $transaction_employee->where('employee_id', $data->id)->groupBy('transaction_id')->count();
+                                           $count = $transaction_employee->where('employee_id', $data->id)->count();
                                         @endphp
                                         {{-- <input type="hidden" id="WorkedCount" value="{{ $transaction_employee->where('employee_id', $data->id)->count() }}"> --}}
                                         <td align="center"><a href="/employee/detail/{{ $data->id }}" id="detail"

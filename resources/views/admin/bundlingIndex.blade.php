@@ -63,7 +63,9 @@
 
 <script>
     $(document).ready( function () {
-        $('#Tables123').DataTable({});
+        $('#Tables123').DataTable({
+            paging: false,
+        });
 
         $("a#delete").click(function (e) { 
             e.preventDefault();

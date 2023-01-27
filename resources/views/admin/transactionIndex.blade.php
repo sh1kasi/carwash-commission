@@ -23,7 +23,7 @@
                         <div class="d-flex justify-content-evenly input-daterange">
                             <div class="from_date d-flex">                              
                                 <p style="width: 155px">Dari tanggal: </p>
-                                <input type="text" class="form-control mb-3" name="from" id="from_date">
+                                <input type="text" class="form-control mb-3" name="from" value="" id="from_date" style="border-radius: 10px !important">
                             </div>
                             <div class="to_date d-flex ms-2">
                                 <p style="width: 250px">Hingga tanggal: </p>
@@ -45,6 +45,7 @@
                                     <th>Total Harga</th>
                                     <th>Tanggal</th>
                                     <th>Detail Komisi</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody id="indexTable">
@@ -89,6 +90,10 @@
 
 <script src="https://cdn.jsdelivr.net/npm/toastr@2.1.4/toastr.min.js"></script>
 
+@php
+    $tambahan = session()->get('tambahan');
+    // dd($tambahan);
+@endphp
 
 @if (Session::get('id'))
     {{-- @dd(Session('id')) --}}
@@ -138,7 +143,7 @@
                 $(workers.services).each(function (key, product) {
                     total_commission += product.commission
                     services = services +
-                        `<li>${product.employee_products.service}</li>`;
+                        `<li>${product.employee_products.service} (Rp ${product.commission.toLocaleString('id-ID')})</li>`;
                     // console.log(`<li>${product.employee_products.service}</li>`);
                     // commission = commission + ``;
                 });
@@ -160,6 +165,58 @@
 
     </script>
 @endif
+
+@if ($tambahan == true)
+    <script>
+
+        $(document).ready(function () {
+
+            var extra_product = {!! session('extra_product') !!}
+            var worker = {!! session('worker') !!}
+            var id = {!! session('transaction_id') !!}
+
+
+            $('#CommissionModal').modal('hide');
+            $('#extraWorksModal').modal('show');
+            var html = ''
+            var extraArray = [];
+            $("#extra_transaction_id").val(id);
+            $(extra_product).each(function (index, ex_product) {
+              // console.log(ex_product);
+              extraArray.push(ex_product.id);
+              console.log(extraArray);
+              html += `
+                    <h5 class="modal-title" id="extraWorksModalLabel">${ex_product.service}</h5>
+                    <input type="hidden" id="product" name="product_id[]" value="${ex_product.id}">
+              `
+              $(worker).each(function (key, extra) {
+                console.log(extra.name);
+                html += `
+                  <input type="checkbox" name="employee_id_${index}[]" class="cbextra ms-2" onclick="extraWorkers(${extra.id} ,${ex_product.id})" value="${extra.id}" id="inputExtra">
+                  <label id="extraName">${extra.name}</label>  
+                  `
+                  $("#extraArray").val(extraArray);                
+                });
+                });
+              $("#pekerjaExtra").append(html);
+
+            
+            // $(response.extra_product).each(function (key, extra) {
+              // $("#extraWorksModalLabel").html(`Pilih penggarap ${response.extra_product}`);
+            // });
+            
+            $('#transactionForm').modal('hide');
+            
+        });
+
+    </script>
+@endif
+
+
+<input type="hidden" name="tambahan" id="tambahan" value>
+
+
+
 
 
 <script>
@@ -207,6 +264,7 @@
               processing: true,
               serverSide: true,
               filter: true,
+              paging: false,
               searching: false,
 
               ajax: {
@@ -225,6 +283,7 @@
                   {data: 'total_price', name: 'Total Harga'},
                   {data: 'tanggal', name: 'Tanggal'},
                   {data: 'detail', name: 'Detail Komisi'},
+                  {data: 'aksi', name: 'Aksi'},
                   
               ]
             });
