@@ -265,6 +265,7 @@
               serverSide: true,
               filter: true,
               pageLength: 10,
+              paging: true,
               searching: false,
               lengthChange: true,
               ajax: {
@@ -276,7 +277,7 @@
                 }
               },
               columns: [
-                  {data: 'id', name: '#'},
+                  {data: 'DT_RowIndex', name: '#'},
                   {data: 'customer', name: 'NO POL'},
                   {data: 'service', name: 'Jenis Layanan'},
                   {data: 'workers', name: 'Penggarap'},
