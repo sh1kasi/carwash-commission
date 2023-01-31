@@ -93,6 +93,11 @@ class TransactionController extends Controller
         ->addColumn('detail', function($row) {
             return '<button class="btn btn-primary" id="commissionDetail" onclick="commissionDetail('.$row->id.')" data-bs-toggle="modal" data-bs-target="#CommissionModal">Detail Komisi</button>';
         })
+        // ->filter(function ($query) {
+        //     if (request()->has('NO POL')) {
+        //         dd('ada');
+        //     }
+        // })
         ->addColumn('service', function($row) {
             $service_column = "";
             foreach ($row->products as $service) {
@@ -119,6 +124,7 @@ class TransactionController extends Controller
             
             return "<a href='/transaction/edit/$row->id' type='button' class='btn btn-primary' id='transactionEdit'><i>Edit Transaksi</i></a>";
         })
+        ->startsWithSearch()
         ->escapeColumns([])
         ->make(true);
 
@@ -526,6 +532,7 @@ class TransactionController extends Controller
                 }
                 
                 $employees = Employee::whereIn('id', $employee)->get();
+                
 
                 $tambahan = $transaksi->products()->where('status', '1')->exists();
                 if (count($extra_product) != 0 && count($normal_product) != 0) {

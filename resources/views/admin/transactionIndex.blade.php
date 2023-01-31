@@ -260,13 +260,13 @@
 
         function load_data(from_date = '', to_date = '') {
             
-            $('#Tables123').DataTable({
+             var table = $('#Tables123').DataTable({
               processing: true,
               serverSide: true,
               filter: true,
-              paging: false,
+              pageLength: 10,
               searching: false,
-
+              lengthChange: true,
               ajax: {
                   type: 'GET',
                 url: '/transaction/json',
@@ -287,6 +287,18 @@
                   
               ]
             });
+
+            // $('.dataTables_filter input').unbind().keyup(function (e) { 
+            //     var value = $(this).val();
+            //     if (value.length > 0) {
+            //         // alert(value);
+            //         resetColumnFilters();
+            //         table.columns().search(value).draw();
+            //     } else {
+            //         resetColumnFilters();
+            //         table.columns().search('').draw();
+            //     }
+            // });
 
         }
 
