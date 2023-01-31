@@ -90,6 +90,7 @@ class TransactionController extends Controller
 
         // DataTables
         return Datatables($transaction)
+        ->addIndexColumn()
         ->addColumn('detail', function($row) {
             return '<button class="btn btn-primary" id="commissionDetail" onclick="commissionDetail('.$row->id.')" data-bs-toggle="modal" data-bs-target="#CommissionModal">Detail Komisi</button>';
         })

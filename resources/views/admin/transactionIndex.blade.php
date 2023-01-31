@@ -141,7 +141,7 @@
                 // var commission = ''
                 var total_commission = 0
                 $(workers.services).each(function (key, product) {
-                    total_commission += product.commission
+                    total_commission = total_commission + parseFloat(product.commission)
                     services = services +
                         `<li>${product.employee_products.service} (Rp ${product.commission.toLocaleString('id-ID')})</li>`;
                     // console.log(`<li>${product.employee_products.service}</li>`);
@@ -264,7 +264,7 @@
               processing: true,
               serverSide: true,
               filter: true,
-              paging: false,
+              paging: true,
               searching: false,
 
               ajax: {
@@ -276,7 +276,7 @@
                 }
               },
               columns: [
-                  {data: 'id', name: '#'},
+                  {data: 'DT_RowIndex', name: '#'},
                   {data: 'customer', name: 'NO POL'},
                   {data: 'service', name: 'Jenis Layanan'},
                   {data: 'workers', name: 'Penggarap'},
