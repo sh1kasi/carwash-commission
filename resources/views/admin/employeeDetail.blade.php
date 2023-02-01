@@ -32,7 +32,7 @@
                         </div>
 
                         {{-- <a href="#" id="addRow" data-bs-toggle="modal" data-bs-target="#transactionForm" class="btn btn-primary m-b-md">Tambah Transaksi</a> --}}
-                        <table id="Tables123" class="display table table-bordered" style="width:100%" align="center">
+                        <table id="Tables123" class="display table table-bordered " style="width:100%;" align="center">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -110,11 +110,21 @@
                                 @endforeach
                             </tbody>
                             <tfoot>
-                                <tr>
+                                <tr class="">
                                     <td colspan="3" text-align="center"></td>
-                                    <td class="table-primary" style="text-align: center">Total : </td>
+                                    <td class="table-primary" style="text-align: center">Total: </td>
                                     <td class="table-primary" style="text-align: center">@currency($total_commission)</td>
                                 </tr>
+                                {{-- <tr class="d-none" id="total_kasbon">
+                                    <td colspan="3" text-align="center"></td>
+                                    <td class="table-warning" style="text-align: center">Total Kasbon: </td>
+                                    <td class="table-warning" style="text-align: center">@currency($total_kasbon)</td>
+                                </tr>
+                                <tr class="d-none" id="sisa_kasbon">
+                                    <td colspan="3" text-align="center"></td>
+                                    <td class="table-danger" style="text-align: center">Sisa Kasbon: </td>
+                                    <td class="table-danger" style="text-align: center">@currency($sisa_nominal)</td>
+                                </tr> --}}
                             </tfoot>
                         </table>
                     </div>
@@ -132,6 +142,16 @@
 
 <script>
     $(document).ready( function () {
+
+        var from_date = $("#from_date").val();
+        var to_date = $("#to_date").val();
+        if (from_date == '' && to_date == '') {
+            $("#total_kasbon").addClass('d-none');
+            $("#sisa_kasbon").addClass('d-none');
+        } else {
+            $("#total_kasbon").removeClass('d-none');
+            $("#sisa_kasbon").removeClass('d-none');
+        }
 
         $("#search_date").click(function (e) { 
             e.preventDefault();
@@ -153,7 +173,9 @@
             autoclose: true,
         });
 
-        $('#Tables123').DataTable({});
+        $('#Tables123').DataTable({
+            pageLength: 5,
+        });
 
         $("#print_pdf").click(function (e) { 
             e.preventDefault();

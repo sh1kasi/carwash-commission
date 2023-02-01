@@ -123,12 +123,12 @@ class TransactionController extends Controller
         })
         ->addColumn('aksi', function($row) {
             
-            return "<a href='/transaction/edit/$row->id' type='button' class='btn btn-primary' id='transactionEdit'><i>Edit Transaksi</i></a>";
+            return "<a href='/transaction/edit/$row->id' type='button' class='btn btn-primary' id='transactionEdit'><i class='fas fa-edit'></i></a>
+                    <a href='#' type'button' class='btn btn-danger' data-id='$row->id' data-name='$row->nopol' onclick='transactionDelete(".$row->id.", ".'"'.$row->customer.'"'.")' id='delete'><i class='fa fa-trash' aria-hidden='true'</a>";
         })
         ->startsWithSearch()
         ->escapeColumns([])
         ->make(true);
-
 
     }
 
@@ -533,6 +533,8 @@ class TransactionController extends Controller
                 }
                 
                 $employees = Employee::whereIn('id', $employee)->get();
+                $non_worker = Employee::whereNotIn('id', $employee)->get();
+                // dd($non_worker);
                 
 
                 $tambahan = $transaksi->products()->where('status', '1')->exists();
@@ -540,6 +542,7 @@ class TransactionController extends Controller
                     return response()->json([
                         'data' => $transaction,
                         'worker' => $employees,
+                        'non_worker' => $non_worker,
                         'tambahan' => $tambahan,
                         'extra_product' => $extra_product,
                     ]);
@@ -563,6 +566,8 @@ class TransactionController extends Controller
         $product = Product::get();
         $bundle = Bundling::get();
         $employees = Employee::get();
+
+        // dd($transaction->employees()->employee_products());
 
         // $selected_employee = Transaction_employee::where('transaction_id', $id)->groupBy('employee_id')->get();
 
@@ -804,12 +809,14 @@ class TransactionController extends Controller
                 }
                 
                 $employees = Employee::whereIn('id', $employee)->get();
+                $non_worker = Employee::whereNotIn('id', $employee)->get();
 
                 $tambahan = $transaksi->products()->where('status', '1')->exists();
                 if (count($extra_product) != 0 && count($normal_product) != 0) {
                     return redirect('/transaction')
                     ->with('data', $transaction)
                     ->with('worker', $employees)
+                    ->with('non_worker', $non_worker)
                     ->with('tambahan', $tambahan)
                     ->with('transaction_id', $id)
                     ->with('extra_product', $extra_product);
@@ -824,6 +831,24 @@ class TransactionController extends Controller
 
         // dd("bisa setengah");
 
+    }
+
+    public function transaction_delete($id)
+    {
+        $transaction = Transaction::find($id);
+
+        $transaction_employee = Transaction_employee::where('transaction_id', $id)->get();
+        $transaction_product = Product_transaction::where('transaction_id', $id)->get();
+
+        foreach ($transaction_employee as $worker) {
+            $worker->delete();
+        }
+        foreach ($transaction_product as $service) {
+            $service->delete();
+        }
+        $transaction->delete(); 
+
+        return back()->with('success', 'Berhasil menghapus transaksi');
     }
 
     public function commission_detail(Request $request)
@@ -1095,11 +1120,10 @@ class TransactionController extends Controller
     public function extra_workers(Request $request)
     {
 
-        // dd($request);
-
+        
         $extra = $request->extra;
         $product_extra = $request->product_extra;
-
+        
         $product_id = $request->product_id;
 
         // dd($extra);
@@ -1117,6 +1141,7 @@ class TransactionController extends Controller
         // }
 
         foreach ($product_id as $key => $extra_product) {
+            // dd($request->{"employee_id_".$key});
             foreach ($request->{"employee_id_".$key} as $a => $value) {
 
 

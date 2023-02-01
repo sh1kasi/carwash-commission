@@ -111,7 +111,7 @@
                     // var commission = ''
                     var total_commission = 0
                     $(workers.services).each(function (key, product) {
-                        total_commission += total_commission + parseFloat(product.commission);
+                        total_commission = total_commission + parseFloat(product.commission);
                         services = services +
                             `<li>${product.employee_products.service} (Rp ${product.commission.toLocaleString('id-ID')})</li>`;
                         // console.log(`<li>${product.employee_products.service}</li>`);

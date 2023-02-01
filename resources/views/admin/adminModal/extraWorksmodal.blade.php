@@ -1,13 +1,17 @@
   <form action="/transaction-extraworkers" id="extraWorkerValidation" method="post">
     @csrf
     <div class="modal fade" id="extraWorksModal" tabindex="-1" role="dialog" data-bs-keyboard="false" data-bs-backdrop="static" aria-labelledby="extraWorksModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="extraWorksModalLabel">Pilih Penggarap Extra</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body pekerja-extra mt-1" id="pekerjaExtra">
+              {{-- <select id="worker_select">
+                <option value="worker" selected>Worker</option>
+                <option value="non">Non-Worker</option>
+              </select> --}}
               
               <div id="extraWorks mt-2">
                 
@@ -25,6 +29,25 @@
   <input type="hidden" name="extraArray[]" id="extraArray">
 
 <script>
+
+  // $(document).ready(function () {
+    
+  //   $("#worker_select").change(function (e) { 
+  //     e.preventDefault();
+
+  //     console.log($(this).val());
+      
+  //     if ($(this).val() == 'worker') {
+  //       $("#non-worker").addClass('d-none');
+  //       $("#worker").removeClass('d-none');
+  //     } else {
+  //       $("#non-worker").removeClass('d-none');
+  //       $("#worker").addClass('d-none');
+  //     }
+
+  //   });
+
+  // });
 
 
 
@@ -44,8 +67,11 @@ function extraWorkers(id, extraId) {
   } else {
     $("#submitBtn").removeClass('disabled');
   }
+
   
   $(document).ready(function () { 
+
+    
     $('.simpan').click(function (e) { 
       e.preventDefault();
       var employee_id = $('input=[name=product]')

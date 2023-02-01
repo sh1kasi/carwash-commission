@@ -29,6 +29,7 @@ Route::get('/', function () {
 Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction.index');
 Route::get('/transaction/edit/{id}', [TransactionController::class, 'edit_index'])->name('transaction.edit');
 Route::post('/transaction/update/{id}', [TransactionController::class, 'transaction_update'])->name('transaction.update');
+Route::get('/transaction/delete/{id}', [TransactionController::class, 'transaction_delete'])->name('transaction.delete');
 Route::get('/transaction/json', [TransactionController::class, 'data'])->name('transaction.json');
 Route::post('/transaction-total', [TransactionController::class, 'total_price_check'])->name('transaction.totalCheck');
 Route::post('/transaction-store', [TransactionController::class, 'transaction_store'])->name('transaction.store');
@@ -74,5 +75,6 @@ Route::get('/kasbon', [KasbonController::class, 'index'])->name('kasbon.index');
 Route::get('/kasbon/json', [KasbonController::class, 'data'])->name('kasbon.data');
 Route::post('/kasbon/input', [KasbonController::class, 'input_kasbon'])->name('kasbon.input');
 Route::post('/kasbon/detail', [KasbonController::class, 'kasbon_detail'])->name('kasbon.detail');
+Route::get('/kasbon/detail/json', [KasbonController::class, 'kasbon_data'])->name('kasbon.detail.json');
 
 // Route::post('/customer-import', [CustomerController::class, 'importExcel'])->name('customer.import');

@@ -34,8 +34,8 @@
                                 <option value="Training">Training</option>
                                 <option value="Freelance">Freelance</option>
                               </select>
-                            </div> --}}
-                            {{-- <div class="mb-3 d-none" id="input_kasbon">
+                            </div>
+                            <div class="mb-3 d-none" id="input_kasbon">
                                 <label for="kasbon" class="form-label">Nominal Maksimal Kasbon</label>
                                 <input type="text" id="kasbon" value="" name="kasbon" class="form-control" id="kasbon" placeholder="Masukkan maksimal kasbon" aria-describedby="emailHelp">
                             </div> --}}
@@ -58,14 +58,14 @@
     //     });
     // });
 
-    // $("#role").change(function (e) { 
-    //     e.preventDefault();
-    //     if ($("#role").val() == 'Tetap') {
-    //         $("#input_kasbon").removeClass('d-none');
-    //     } else {
-    //         $("#input_kasbon").addClass('d-none');
-    //     }
-    // });
+    $("#role").change(function (e) { 
+        e.preventDefault();
+        if ($("#role").val() == 'Tetap') {
+            $("#input_kasbon").removeClass('d-none');
+        } else {
+            $("#input_kasbon").addClass('d-none');
+        }
+    });
 
 
     // $("#submit").click(function (e) { 

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{{-- @dd(asset('public')) --}}
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -33,6 +34,7 @@
         <!-- Theme Styles -->
         <link href="{{ asset('template') }}/css/main.min.css" rel="stylesheet">
         <link href="{{ asset('template') }}/css/custom.css" rel="stylesheet">
+        {{-- <link href= "{{ asset('/public/template/css/custom.css') }}" rel="stylesheet"> --}}
         {{-- <link href="{{ asset('template') }}/css/dark-theme.css" rel="stylesheet"> --}}
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->

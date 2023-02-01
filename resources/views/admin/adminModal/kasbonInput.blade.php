@@ -13,7 +13,7 @@
 
                     <ul id="err_list"></ul>
 
-                    <div class="form-group pb-1 input-daterange">
+                    <div class="form-group pb-1 input-daterange" id="awan">
                         <label for="exampleInputEmail1"><b>Tanggal Input</b></label> <br>
                         <input type="text" style="width: 25%;"class="form-control mt-2 mb-2" id="tgl_input"
                             style="text-transform: uppercase;" placehorer="Masukkan tanggal input kasbon"
@@ -22,7 +22,7 @@
                     </div>
                     <div class="form-group pb-1">
                         <label for="exampleInputEmail1"><b>Masukkan Nominal Kasbon</b></label> <br>
-                        <input type="text" style="width: 100%;" name="nominal" class="form-control mt-2 mb-2" id="tgl_input"
+                        <input type="text" style="width: 40%;" name="nominal" class="form-control mt-2 mb-2" id="tgl_input"
                             style="text-transform: uppercase;" placehorer="Masukkan nominal kasbon"
                             aria-describedby="emailHelp"></input>
                         {{-- < name="nopol" class="form-control mt-1 mb-2" id="nopol" aria-describedby="emailHelp" placeholder="Masukkan nomor plat kendaraan"> --}}
@@ -42,7 +42,7 @@
 
 <script>
     $(document).ready(function () {
-        $('.input-daterange').datepicker({
+        $('#awan').datepicker({
             todayBtn: 'linked',
             format: 'yyyy-mm-dd',
             autoclose: true,

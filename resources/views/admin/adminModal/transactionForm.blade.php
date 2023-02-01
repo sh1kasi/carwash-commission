@@ -340,18 +340,39 @@ var selectOption = {
                   // console.log(ex_product);
                   extraArray.push(ex_product.id);
                   console.log(extraArray);
-                  html += `
-                        <h5 class="modal-title" id="extraWorksModalLabel">${ex_product.service}</h5>
-                        <input type="hidden" id="product" name="product_id[]" value="${ex_product.id}">
-                  `
+                  var non_worker = ''
+                  $(response.non_worker).each(function (key, non) {
+                    non_worker += `<div class="">
+                      <input type="checkbox" name="employee_id_${index}[]" class="cbextra ms-2 non-worker" onclick="extraWorkers(${non.id} ,${ex_product.id})" value="${non.id}" id="inputExtra">
+                      <label id="extraName">${non.name}</label>  
+                      </div>`
+                      $("#extraArray").val(extraArray);
+                  });
+                  var worker = ''
                   $(response.worker).each(function (key, extra) {
                     console.log(extra.name);
-                    html += `
-                      <input type="checkbox" name="employee_id_${index}[]" class="cbextra ms-2" onclick="extraWorkers(${extra.id} ,${ex_product.id})" value="${extra.id}" id="inputExtra">
+                    worker += `<div class="">
+                      <input type="checkbox" name="employee_id_${index}[]" class="cbextra ms-2 worker" onclick="extraWorkers(${extra.id} ,${ex_product.id})" value="${extra.id}" id="inputExtra">
                       <label id="extraName">${extra.name}</label>  
-                      `
+                      </div>`
                       $("#extraArray").val(extraArray);                
-                    });
+                  });
+                  html += `
+                        <h5 class="modal-title" id="extraWorksModalLabel">${ex_product.service}</h5>
+                        <div class="row">
+                          <div class="col-md-6 order-2" id="non-worker">
+                            <p>Non-pekerja: </p>
+                            ${non_worker}
+                          </div>
+                          <div class="col-md-6" id="worker">
+                            <p>Pekerja: </p>
+                             <input type="hidden" id="product" name="product_id[]" value="${ex_product.id}">
+                             ${worker}
+                          </div>
+                        </div>
+                  `
+                 
+
                     });
                   $("#pekerjaExtra").append(html);
           
