@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\KasbonController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TransactionController;
 
@@ -21,11 +22,20 @@ use App\Http\Controllers\TransactionController;
 */
 
 Route::get('/', function () {
-    return redirect()->route('transaction.index');
+    return redirect()->route('login.index');
 });
 
+// Route::group(['middleware' => ['guest']], function () {
+// });
 
-// Transaction
+// Login
+Route::get('/login', [LoginController::class, 'index'])->name('login.index');
+Route::post('/login/store', [LoginController::class, 'login_store'])->name('login.store');
+Route::post('/logout', [LoginController::class, 'logout'])->name('user.logout');
+
+Route::group(['middleware' => ['auth']], function () {
+
+    // Transaction
 Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction.index');
 Route::get('/transaction/edit/{id}', [TransactionController::class, 'edit_index'])->name('transaction.edit');
 Route::post('/transaction/update/{id}', [TransactionController::class, 'transaction_update'])->name('transaction.update');
@@ -76,5 +86,13 @@ Route::get('/kasbon/json', [KasbonController::class, 'data'])->name('kasbon.data
 Route::post('/kasbon/input', [KasbonController::class, 'input_kasbon'])->name('kasbon.input');
 Route::post('/kasbon/detail', [KasbonController::class, 'kasbon_detail'])->name('kasbon.detail');
 Route::get('/kasbon/detail/json', [KasbonController::class, 'kasbon_data'])->name('kasbon.detail.json');
+
+
+
+});
+
+
+
+
 
 // Route::post('/customer-import', [CustomerController::class, 'importExcel'])->name('customer.import');

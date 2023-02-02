@@ -9,13 +9,14 @@ use App\Models\Employee;
 use Carbon\CarbonPeriod;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
-use Yajra\Datatables\Datatables;
-use App\Http\Controllers\Controller;
 use App\Models\Bundling_product;
+use Yajra\Datatables\Datatables;
 use App\Models\Product_transaction;
+use App\Http\Controllers\Controller;
 use App\Models\Transaction_employee;
-use Illuminate\Database\Events\TransactionCommitted;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\Events\TransactionCommitted;
 
 
 class TransactionController extends Controller
@@ -26,6 +27,8 @@ class TransactionController extends Controller
     public function index(Request $request)
     {
         // dd($request);
+        // Auth::logout();
+
 
         $currentDate = Carbon::now()->format('Y-m-d');
 
