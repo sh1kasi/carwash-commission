@@ -69,7 +69,7 @@
 <script>
 
     function inputKasbon(id) {
-        // console.log(id);
+        console.log(id);
         $("#employee_id").val(id);
     }
 

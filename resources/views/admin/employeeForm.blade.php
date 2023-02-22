@@ -26,7 +26,7 @@
                               <label for="exampleInputEmail1" class="form-label">Nama Pegawai</label>
                               <input type="text" id="name" value="" name="name" class="form-control" id="exampleInputEmail1" placeholder="Masukkan Nama Pegawai" aria-describedby="emailHelp">
                             </div>
-                            {{-- <div class="mb-3">
+                            <div class="mb-3">
                               <label for="role" class="form-label">Role Pegawai</label>
                               <select class="form-control" name="role" id="role">
                                 <option>Pilih Role Pegawai</option>
@@ -38,7 +38,7 @@
                             <div class="mb-3 d-none" id="input_kasbon">
                                 <label for="kasbon" class="form-label">Nominal Maksimal Kasbon</label>
                                 <input type="text" id="kasbon" value="" name="kasbon" class="form-control" id="kasbon" placeholder="Masukkan maksimal kasbon" aria-describedby="emailHelp">
-                            </div> --}}
+                            </div>
                             <button type="submit" id="submit" class="btn btn-primary mt-3">Submit</button>
                           </form>
                     </div>

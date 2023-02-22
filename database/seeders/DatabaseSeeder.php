@@ -6,6 +6,9 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use Database\Seeders\ProductsTableSeeder;
+use Database\Seeders\EmployeesTableSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,11 +19,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(ProductsTableSeeder::class);
-        $this->call(EmployeesTableSeeder::class);
+        // $this->call(ProductsTableSeeder::class);
+        // $this->call(EmployeesTableSeeder::class);
 
         $data = [
-            ['name' => 'admin', 'email' => 'admin00@gmail.com', 'password' => bcrypt('admin12345')]
+            ['name' => 'admin', 'email' => 'admin00@gmail.com', 'password' => Hash::make('admin12345')]
         ];
 
         User::insert($data);

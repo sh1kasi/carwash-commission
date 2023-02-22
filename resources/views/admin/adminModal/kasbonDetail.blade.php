@@ -121,6 +121,7 @@
                     pageLength: 10,
                     bInfo: false,
                     destroy: true,
+                    destroy: true,
                     language: {
                         emptyTable: 'Kasbon kosong'
                     },
@@ -140,7 +141,7 @@
                     columns: [
                         {data: 'tgl_input', name: 'Tanggal Input Kasbon'},
                         {data: 'nominal_kasbon', name: 'Nominal Kasbon'},
-                        // {data: 'sisa_kasbon', name: 'Sisa Kasbon Bulan Ini: '},
+                        {data: 'sisa_kasbon', name: 'Sisa Kasbon Bulan Ini: '},
                     ],
                 });
             }

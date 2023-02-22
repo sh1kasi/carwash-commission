@@ -198,11 +198,11 @@
                 @endif">
                     <a href={{ route('bundle.index') }}><i data-feather="box"></i>Bundling</a>
                   </li>
-                  {{-- <li class="mt-3 @if (Route::current()->getName() == 'kasbon.index')
+                  <li class="mt-3 @if (Route::current()->getName() == 'kasbon.index')
                     active-page
                 @endif">
                     <a href={{ route('kasbon.index') }}><i data-feather="box"></i>Kasbon</a>
-                  </li> --}}
+                  </li>
                 </ul>
             </div>        
             </div>
