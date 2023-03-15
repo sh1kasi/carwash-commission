@@ -1,12 +1,14 @@
 <?php
 
-use App\Http\Controllers\BundleController;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\BundleController;
 use App\Http\Controllers\KasbonController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\TransaksiController;
+use Illuminate\Routing\Route as RoutingRoute;
 use App\Http\Controllers\TransactionController;
 
 /*
@@ -38,7 +40,6 @@ Route::post('/transaction-select', [TransactionController::class, 'select_nopol'
 
 // Employee
 Route::get('/employee', [EmployeeController::class, 'index'])->name('employee.index');
-
 Route::get('/employee/form', [EmployeeController::class, 'form_index'])->name('employee.form');
 Route::post('/employee/form/post', [EmployeeController::class, 'form_store'])->name('employee.post');
 Route::get('/employee/edit/{id}', [EmployeeController::class, 'edit_index'])->name('employee.edit');
@@ -73,6 +74,13 @@ Route::get('bundle/delete/{id}', [BundleController::class, 'destroy_bundle'])->n
 Route::get('/kasbon', [KasbonController::class, 'index'])->name('kasbon.index');
 Route::get('/kasbon/json', [KasbonController::class, 'data'])->name('kasbon.data');
 Route::post('/kasbon/input', [KasbonController::class, 'input_kasbon'])->name('kasbon.input');
-Route::post('/kasbon/detail', [KasbonController::class, 'kasbon_detail'])->name('kasbon.detail');
+Route::get('/kasbon/detail', [KasbonController::class, 'kasbon_detail'])->name('kasbon.detail');
+
+//latest transaksi
+Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
+
+// customer
+Route::get('/customer/mobil', [CustomerController::class, 'index'])->name('customer.mobil');
+Route::get('/customer/motor', [CustomerController::class, 'index'])->name('customer.motor');
 
 // Route::post('/customer-import', [CustomerController::class, 'importExcel'])->name('customer.import');

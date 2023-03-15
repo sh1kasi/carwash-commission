@@ -35,14 +35,14 @@
 
                         <a href="#" id="addRow" data-bs-toggle="modal" data-bs-target="#transactionForm" class="btn btn-primary m-b-md">Tambah Transaksi</a> <br>
                         {{-- <p style="font-size: 16px; font-weight: 600; text-align:center" class="pb-6">Transaksi Tanggal {{ $tgl }}</p> --}}
-                        <table id="Tables123" class="display table table-bordered" style="width:100%; margin-top: 40px">
+                        <table id="Tables123" class="display table table-bordered" style="margin-top: 40px">
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>NO POL</th>
+                                    <th style="width: 200px">NO POL</th>
                                     <th>Jenis Layanan</th>
                                     <th>Penggarap</th>
-                                    <th>Total Harga</th>
+                                    <th style="width: 150px">Total Harga</th>
                                     <th>Tanggal</th>
                                     <th>Detail Komisi</th>
                                     <th>Aksi</th>

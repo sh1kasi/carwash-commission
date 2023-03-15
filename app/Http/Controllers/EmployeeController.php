@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Models\Employee;
-// use Barryvdh\DomPDF\PDF;
 use PDF;
+use Carbon\Carbon;
+// use Barryvdh\DomPDF\PDF;
+use App\Models\Kasbon;
+use App\Models\Employee;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use App\Models\Employee_kasbon;
 use App\Imports\CustomersImport;
 use App\Http\Controllers\Controller;
-use App\Models\Kasbon;
 use App\Models\Transaction_employee;
+use Barryvdh\DomPDF\PDF as DomPDFPDF;
 use Maatwebsite\Excel\Facades\Excel;
 
 class EmployeeController extends Controller
@@ -51,7 +53,7 @@ class EmployeeController extends Controller
             // 'role'=> 'required',
         ]);
         // return $request;
-
+        
         $name = $request->name;
         $role = $request->role;
         $kasbon = $request->kasbon;
@@ -62,16 +64,17 @@ class EmployeeController extends Controller
         $employee->kasbon = $kasbon;
         // dd($employee);
         $employee->save();
+        
         // dd($employee->created_at->translatedFormat('j F Y - H:i:s'));
         
-        if ($employee->role != 'Training') {
+       
             $kasbon = new Kasbon;
             $kasbon->employee_id = $employee->id;
             $kasbon->promoted_date = $employee->created_at;
             $kasbon->reset_date = $employee->created_at;
             $kasbon->sisa_nominal = $employee->kasbon;
             $kasbon->save();
-        }
+
 
         return redirect('/employee')->with('success', 'Berhasil Menambahkan Pegawai');
     }
@@ -82,7 +85,7 @@ class EmployeeController extends Controller
 
         return view('admin.employeeEdit', compact('employee'));
 
-    }
+    }   
 
     public function employee_update(Request $request, $id)
     {
@@ -98,23 +101,27 @@ class EmployeeController extends Controller
         $role = $request->role;
         $kasbon = $request->kasbon;
 
+        $kasbon = $request->kasbon;
         $employee->name = $name;
         $employee->role = $role;
         $employee->kasbon = $kasbon;
         $employee->save();
 
         // dd($employee->id);
+
+        if ($request->role != 'Training') {
+            if (!$kasbon_check) {
+            $kasbon = new Kasbon;
+            $kasbon->employee_id = $employee->id;
+            $kasbon->promoted_date = $employee->created_at;
+            $kasbon->reset_date = $employee->created_at;
+            $kasbon->sisa_nominal = $employee->kasbon;
+            $kasbon->save();
+            }
+        }
         
-        // if ($request->role != 'Training') {
-        //     if (!$kasbon_check) {
-        //         $kasbon = new Kasbon;
-        //     }
-        //     $kasbon->employee_id = $employee->id;
-        //     $kasbon->promoted_date = $employee->created_at;
-        //     $kasbon->reset_date = $employee->created_at;
-        //     $kasbon->sisa_nominal = $employee->kasbon;
-        //     $kasbon->save();
-        // }
+        
+        
 
         return redirect('/employee')->with('success', 'Berhasil Mengedit Pegawai');
     }
@@ -155,7 +162,7 @@ class EmployeeController extends Controller
     //     //     $service_column = "";
     //     //     foreach ($row->products as $service) {
     //     //         $service_column .= '<ul><li>'.$service->service.'</li></ul>';
-    //     //     }
+    //     //      }
     //     //     return $service_column;
     //     // })
     //     // ->addColumn('tanggal', function($row) {
@@ -239,6 +246,8 @@ class EmployeeController extends Controller
         // dd($transaksi->get());
 
         $transaction = $transaksi->get();
+        $kasbon_employee = Employee_kasbon::where('employee_id', $request->id)->get();
+
 
         // dd($transaction);
 
@@ -248,9 +257,9 @@ class EmployeeController extends Controller
         if (!empty($request->from)) {
             // dd('a');
             if ($request->from === $request->to) {
+                      $kasbon_employee = Employee_kasbon::where('employee_id', $id)->whereDate('tanggal_input', $request->from)->get();
                       $transaction_employee = Transaction_employee::where('employee_id', $id)
                       ->whereDate('created_at', $request->from)
-                    //  ->whereDate('created_at', $request->from)
                      ->groupBy('transaction_id')
                      ->with('transactions')
                      ->with('employee_products')->get(); 
@@ -265,11 +274,7 @@ class EmployeeController extends Controller
                 ->get();
             }
         } else {
-            // $transaction_employee = Transaction_employee::where('employee_id', $id)
-            // ->groupBy('transaction_id')
-            // ->with('transactions')
-            // ->with('employee_products')
-            // ->get();
+            $kasbon_employee = Employee_kasbon::where('employee_id', $request->id)->get();
             $transaction_employee = Transaction_employee::where('employee_id', $id)
             ->groupBy('transaction_id')
             ->with('transactions')
@@ -277,84 +282,17 @@ class EmployeeController extends Controller
             ->get();
         }
 
+        $total_kasbon = 0;
+        $sisa_nominal = 0;
+        foreach ($kasbon_employee as $kasbon) {
+            $total_kasbon += $kasbon->nominal;
+            $sisa_nominal = $kasbon->kasbon_maksimal - $total_kasbon;
+        }
         // dd($request);
 
-        // if ($from && $to) {
-        //     // dd('a');
-        //     $transaction_employee = $key->whereDate('created_at', '>=', $from)
-        //     ->groupBy('transaction_id')
-        //     ->with('transactions')
-        //     ->with('employee_products')
-        //     ->whereDate('created_at', '<=', $to)->get();
-        //     // $  = Transaction_employee::where('employee_id', $id)->get();
-
-        //     // dd($transaction);
-        // } else {
-        //     // dd('b');
-        //     $transaction_employee = Transaction_employee::where('employee_id', $id)
-        //     ->groupBy('transaction_id')
-        //     ->with('transactions')
-        //     ->with('employee_products')
-        //     ->get();
-      
-        // }
-
-        // dd($transaction_employee);
-        
-
-        // $normal_products = $key->products()->where('status', '0')->get();
-        // $extra_products = $key->products()->where('status', '1')->get();
-        // $normal_workers = $key->employees()->where('status', 'normal')->count();
-        // $extra_workers = $key->employees()->where('status', 'extra')->count();
-        // $total_workers = $key->employees()->count();
-
-        
-
-
-
-
-        
-
-        // if ($extra_workers != 0 && $normal_workers != 0) {
-        //     foreach ($normal_products as $biasa) {
-        //         $normal_price = $biasa->price;
-        //     }
-        //     foreach ($extra_products as $extra) {
-        //         $extra_price = $extra->price;
-        //     }
-        // } elseif ($extra_workers == 0 && $normal_workers != 0) {
-        //     foreach ($extra_products as $extra) {
-        //         $extra_price = $extra->price;
-        //     }
-        //     foreach ($normal_products as $biasa) {
-        //         $normal_price = $biasa->price;
-        //     }
-        // } elseif ($extra_workers != 0 && $normal_workers == 0) {
-        //     foreach ($normal_products as $biasa) {
-        //         $normal_price = $biasa->price;
-        //     }
-        //     foreach ($extra_products as $extra) {
-        //         $extra_price = $extra->price;
-        //     }
-        // }
-
-        // dd($extra_price);
-
-        // dd($normal_products);
-
-        // dd($key->employees()->where('status', 'normal')->get());
-
-
-        // $transaction_employee = Transaction_employee::where('employee_id', $id)->get();
-       
         $employee = Employee::find($id);
-        // if ($employee->trashed()) {
-        //     $employee = Employee::onlyTrashed()->where('id', $id)->get();
-        // } else {
-        //     $employee = Employee::find($id);
-        // }
 
-        return view('admin.employeeDetail', compact('transaction', 'transaction_employee', 'transaction_product', 'id', 'employee'));
+        return view('admin.employeeDetail', compact('transaction', 'transaction_employee', 'transaction_product', 'id', 'employee','total_kasbon','sisa_nominal'));
     }
 
 
@@ -381,6 +319,8 @@ class EmployeeController extends Controller
 
         $employee = Employee::where('id', $id)->first();
 
+        // dd($employee_kasbon);
+        
         // dd($request);
 
         $transaction = Transaction::whereHas('employee_transaction', function($query) use($id) {
@@ -392,13 +332,15 @@ class EmployeeController extends Controller
         ->with('transactions')
         ->with('employee_products')
         ->get();
+        $employee_kasbon = Employee_kasbon::where('employee_id', $id)->get();
+
 
         $transaction_product = Transaction_employee::where('employee_id', $id)->get();
 
 
-        foreach ($transaction_employee as $transaksi) {
+        // foreach ($transaction_employee as $transaksi) {
             
-        }
+        // }
         // dd($to);
         if (!empty($request->from)) {
             // dd('a');
@@ -410,6 +352,8 @@ class EmployeeController extends Controller
                      ->with('transactions')
                      ->with('employee_products')->get(); 
                     // dd($daterange);  
+                    $employee_kasbon = Employee_kasbon::where('employee_id', $id)->whereDate('tanggal_input', $request->from)->get();
+
             } else {
                 $daterange = Transaction_employee::where('employee_id', $id)
                 ->whereDate('created_at', '>=', $request->from)
@@ -418,6 +362,11 @@ class EmployeeController extends Controller
                 ->with('transactions')
                 ->with('employee_products')
                 ->get();
+                $employee_kasbon = Employee_kasbon::where('employee_id', $id)
+                ->whereDate('tanggal_input', '>=', $request->from)
+                ->whereDate('tanggal_input', '<=', $request->to)
+                ->get();
+
             }
         } else {
             // $daterange = Transaction_employee::where('employee_id', $id)
@@ -425,11 +374,13 @@ class EmployeeController extends Controller
             // ->with('transactions')
             // ->with('employee_products')
             // ->get();
+            
             $daterange = Transaction_employee::where('employee_id', $id)
             ->groupBy('transaction_id')
             ->with('transactions')
             ->with('employee_products')
             ->get();
+            $employee_kasbon = Employee_kasbon::where('employee_id', $id)->get();
         }
 
         $tanggal_terlama = $transaction_employee->first()->created_at->format('Y-m-d');
@@ -450,6 +401,7 @@ class EmployeeController extends Controller
             'employee' => $employee,
             'from' => $from,
             'to' => $to,
+            'employee_kasbon' => $employee_kasbon,
         ]);
         $pdf = PDF::loadview('admin.employeeDetailExportPDF');
         // dd($pdf);
@@ -477,7 +429,7 @@ class EmployeeController extends Controller
 
         // dd($daterange);
 
-        view()->share('daterange', $daterange);
+        view()->share('daterange', 'employee_kasbon');
         $pdf = PDF::loadview('admin.employeeDetailExportPDF');
         return $pdf->download('testKomisi.pdf');
 

@@ -16,6 +16,7 @@ use App\Models\Product_transaction;
 use App\Models\Transaction_employee;
 use Illuminate\Database\Events\TransactionCommitted;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
 
 
 class TransactionController extends Controller
@@ -205,6 +206,7 @@ class TransactionController extends Controller
         $employee = $request->employee;
         $total_price = $request->total_price;
         $bundling = $request->bundling;
+        
 
         // dd($date);
 
@@ -1070,7 +1072,6 @@ class TransactionController extends Controller
                 'commiss_check' => $extra_workers,
                 'normal_commission' => $normal_commission,
                 // 'per_produk' => $productnya,
-
                 // 'extra_commission' => $extra_commission,
                 'grouped_product' => $employee_transaction_product,
                 'normal_price' => $normal_price,

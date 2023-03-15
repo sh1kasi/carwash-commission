@@ -58,13 +58,23 @@
                 <th>Layanan yang dikerjakan</th>
                 <th>Tanggal</th>
                 <th>Komisi</th>
+                {{-- <th>Kasbon</th> --}}
             </tr>
         </thead>
         <tbody>
             @php
             $no = 1;
             $total_commission = 0;
+            $total_kasbon = 0;
             @endphp
+
+            @foreach ($employee_kasbon as $kasbon)
+                @php
+                    $total_kasbon += $kasbon->nominal;
+                    $sisa_nominal = $kasbon->kasbon_maksimal - $total_kasbon;
+                @endphp
+            @endforeach
+
             @foreach ($daterange as $data)
             {{-- @foreach ($data->employees->where('id', $id) as $worker) --}}
             <tr id="tbody">
@@ -130,6 +140,15 @@
                 <td class="table-primary" style="text-align: center">Total : </td>
                 <td class="table-primary" style="text-align: center">@currency($total_commission)</td>
             </tr>
+            <th class="text-align: center;" colspan="5  ">Kasbon
+                <tr>
+                    <td colspan="1" text-align="center"></td>
+                    <td class="table-primary" style="text-align: center">Total Kasbon : </td>
+                    <td class="table-primary" style="text-align: center">@currency($total_kasbon)</td>
+                    <td class="table-primary" style="text-align: center">Sisa Kasbon</td>
+                    <td class="table-primary" style="text-align: center">@currency($sisa_nominal)</td>
+                </tr>
+            </th>
         </tfoot>
     </table>
 

@@ -11,4 +11,8 @@ class Employee_kasbon extends Model
 
     protected $table = 'employee_kasbon';
     protected $guarded = [];
+
+    public function employee(){
+        return $this->belongsTo(Employee::class);
+    }
 }

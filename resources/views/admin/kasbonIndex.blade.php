@@ -10,8 +10,8 @@
             <div class="col">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Transaksi</h5>
-
+                        <h5 class="card-title">Kasbon</h5>
+                        {{-- <a href="/bundle/form" id="addBundle" class="btn btn-primary m-b-md">Tambah KasbonP</a> --}}
                         <div class="d-flex justify-content-evenly input-daterange">
                             <div class="from_date d-flex">                              
                                 <p style="width: 155px">Dari tanggal: </p>
@@ -40,7 +40,6 @@
                                 </tr>
                             </thead>
                             <tbody id="indexTable">
-
                             </tbody>
                         </table>
                     </div>
@@ -65,11 +64,17 @@
         toastr.success("{!! Session('success') !!}");
     </script>
 @endif
+
+@if (session()->has('error'))
+    <script>
+        toastr.error("{!! Session('error') !!}");
+    </script>
+@endif
     
 <script>
 
-    function inputKasbon(id) {
-        // console.log(id);
+    function inputKasbon(id) { 
+        // console.log(id); 
         $("#employee_id").val(id);
     }
 
@@ -81,10 +86,10 @@
           }
         });
 
-        load_data();
+        // load_data();
 
         
-        function load_data(from_date = '', to_date = '') {
+        // function load_data(from_date = '', to_date = '') {
             
             $('#Tables123').DataTable({
                 processing: true,
@@ -93,15 +98,15 @@
                 searching: false,
                 
                 ajax: {
-                  type: 'GET',
+                type: 'GET',
                 url: '/kasbon/json',
-                data: {
-                    from_date: from_date,
-                    to_date: to_date,
-                }
+                // data: {
+                // from_date: from_date,
+                // to_date: to_date,
+                // }
               },
               columns: [
-                  {data: 'id', name: '#'},
+                  {data: 'DT_RowIndex', name: '#'},
                   {data: 'name', name: 'Nama Pegawai'},
                   {data: 'promoted_date', name: 'Tanggal Pengangkatan'},
                   {data: 'kasbon_input', name: 'Tanggal Input Kasbon'},
@@ -110,7 +115,8 @@
                 ]
             });
             
-        }
+        // }    
+        
     });
 
 </script>

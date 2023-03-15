@@ -14,9 +14,10 @@ class Kasbon extends Model
         return $this->belongsToMany(Employee::class)->withTimestamps();
     }
 
-    public function workers()
+    public function worker()
     {
-        return $this->belongsTo(Employee::class, 'employee_id', 'id');
+        return $this->belongsTo(Employee::class, 'employee_id', 'id')->withTrashed();
+        
     }
 
 

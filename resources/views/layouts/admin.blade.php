@@ -178,7 +178,12 @@
                   <li class="sidebar-title">
                     Main
                   </li>
-                  <li class="@if (Route::current()->getName() == 'transaction.index')
+                  <li class="@if (Route::current()->getName() == 'transaksi.index')
+                    active-page
+                @endif">
+                    <a href={{ route('transaksi.index') }}><i data-feather="mail"></i>Transaksi Terbaru</a>
+                  </li>
+                  <li class="mt-3 @if (Route::current()->getName() == 'transaction.index')
                       active-page
                   @endif"
                   >
@@ -199,10 +204,16 @@
                 @endif">
                     <a href={{ route('bundle.index') }}><i data-feather="box"></i>Bundling</a>
                   </li>
-                  {{-- <li class="mt-3 @if (Route::current()->getName() == 'kasbon.index')
+                  <li class="mt-3 @if (Route::current()->getName() == 'kasbon.index')
                     active-page
                 @endif">
-                    <a href={{ route('kasbon.index') }}><i data-feather="box"></i>Kasbon</a>
+                    <a href={{ route('kasbon.index') }}><i data-feather="archive"></i>Kasbon</a>
+                  </li>
+                  
+                  {{-- <li class="mt-3 @if (Route::current()->getName() == 'total.index')
+                    active-page 
+                @endif">
+                    <a href={{ route('total.index') }}><i data-feather="pie-chart"></i>Total</a>
                   </li> --}}
                 </ul>
             </div>        
