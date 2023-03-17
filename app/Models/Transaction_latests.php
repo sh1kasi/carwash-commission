@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Transaction_latests extends Model
 {
     use HasFactory;
+
+    protected $table = "transaction_latests";
+    protected $guarded = [];
 }

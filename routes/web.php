@@ -78,9 +78,15 @@ Route::get('/kasbon/detail', [KasbonController::class, 'kasbon_detail'])->name('
 
 //latest transaksi
 Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
+Route::get('/transaksi/json', [TransaksiController::class, 'json'])->name('transaksi.data');
 
 // customer
 Route::get('/customer/mobil', [CustomerController::class, 'index'])->name('customer.mobil');
 Route::get('/customer/motor', [CustomerController::class, 'index'])->name('customer.motor');
+Route::post('/customer/store', [CustomerController::class, 'store'])->name('customer.store');
 
+// scanqr
+Route::get('/scanqr', function() {
+    return view('scanqr');
+})->name('scan-qr');
 // Route::post('/customer-import', [CustomerController::class, 'importExcel'])->name('customer.import');

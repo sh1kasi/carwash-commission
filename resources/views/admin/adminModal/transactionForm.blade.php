@@ -21,7 +21,11 @@
         </div>
         <div class="form-group pb-1">
           <label for="exampleInputEmail1"><b>NO PLAT KENDARAAN</b></label> <br>
-          <select style="width: 100%;" class="form-control mt-2 mb-2" id="nopol" style="text-transform: uppercase;" aria-describedby="emailHelp" name="nopol"></select>
+          <select style="width: 100%;" class="form-control mt-2 mb-2" id="nopol" style="text-transform: uppercase;" aria-describedby="emailHelp" name="nopol">
+            @if (Request('nopol'))
+                <option value="{{ Request('nopol') }}">{{ Request('nopol') }}</option>
+            @endif
+          </select>
           {{-- < name="nopol" class="form-control mt-1 mb-2" id="nopol" aria-describedby="emailHelp" placeholder="Masukkan nomor plat kendaraan"> --}}
         </div>
         
@@ -78,7 +82,7 @@
 
       </div>
       <div class="modal-footer">
-        <button type="submit" id="submit" class="btn btn-primary">Simpan Transaksi</button>
+        <button type="submit" id="submit" class="btn btn-primary" >Simpan Transaksi</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
@@ -233,7 +237,6 @@ var selectOption = {
   } 
 
   $(document).ready(function () {
-
     $("#submit").click(function (e) { 
       e.preventDefault();
 
@@ -244,11 +247,14 @@ var selectOption = {
       var total_price = $("#total_price").val();
       var commission = $("#servicesCheckbox").data('commission');
       var commiss_check = $("#servicesCheckbox").data('type');
+      var request_transaksi_id = $('input[name="request_transaksi_id"]').val()
 
       console.log(commiss_check);
 
       var serviceArray = [];
       var employeeArray = [];
+
+      // window.location.href('/transaksi')
 
       
     $(".cbservice:checkbox:checked").each(function () {
@@ -302,6 +308,7 @@ var selectOption = {
           date: date,
           bundling: bundleArray,
           commiss_check: commiss_check,
+          request_transaksi_id: request_transaksi_id,
         },
         dataType: "json",
         success: function (response) {

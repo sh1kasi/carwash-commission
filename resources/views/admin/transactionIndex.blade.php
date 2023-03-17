@@ -1,3 +1,4 @@
+
 @extends('layouts.admin')
 
 @section('content')
@@ -30,6 +31,22 @@
                                 <input type="text" class="form-control mb-3" name="to" value="" id="to_date">
                                 <button class="btn btn-primary mb-3 ms-1" type="button" id="search_date"><i class="fa fa-search" aria-hidden="true"></i></i></button>
                                 <button class="btn btn-warning mb-3 ms-1" type="button" id="refresh"><i class="fa fa-refresh" aria-hidden="true"></i></i></button>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="total_transaction">
+                                    Total Transaksi
+                                </label>
+                                <input type="text" id="total_transaction" class="form-control" readonly>
+                            </div>
+    
+                            <div class="form-group col-md-6 pb-4">
+                                <label for="total_commision">
+                                    Total Komisi
+                                </label>
+                                <input type="text" id="total_commision" class="form-control" readonly>
                             </div>
                         </div>
 
@@ -89,11 +106,28 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/toastr@2.1.4/toastr.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
 
 @php
     $tambahan = session()->get('tambahan');
     // dd($tambahan);
 @endphp
+
+@if (!empty(Request('tanggal')))
+    <input type="hidden" id="tanggal" value="{{ Request('tanggal') }}">
+    <input type="hidden" id="nopol" value="{{ Request('nopol') }}">
+    <input type="hidden" id="transaksi_id" value="{{ Request('transaksi_id') }}" name="request_transaksi_id">
+    <script>
+        $(document).ready(function () {
+            $("#transactionForm").modal('show')
+            $("#date").val($("#tanggal").val());
+            $(".modal-body").append(`<input type="hidden" id="transaksi_id" value="${transaksi_id}">`);
+            $("#select2-nopol-container").attr('title', $("#nopol").val());
+            
+            // $(".select2-search__field").val($("#nopol").val());
+        });
+    </script>
+@endif
 
 @if (Session::get('id'))
     {{-- @dd(Session('id')) --}}
@@ -273,6 +307,12 @@
                 data: {
                     from_date: from_date,
                     to_date: to_date,
+                },
+                dataSrc: function(res){
+                    $('#total_commision').val(numeral(res.total_komisi).format("0,0"))
+                    $('#total_transaction').val(numeral(res.total_transaksi).format("0,0"))
+
+                return res.data
                 }
               },
               columns: [

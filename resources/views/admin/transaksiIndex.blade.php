@@ -53,19 +53,17 @@
                             </div>
                         </div>
 
-                        <table id="Tables123" class="display table table-striped table-hover"  style="width:100%; margin-top: 40px; text-align:center">
+                        <table id="transaksiTable" class="display table table-striped table-hover"  style="width:100%; margin-top: 40px; text-align:center">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>Jenis Kendaraan</th>
-                                    <th>Nopol</th>
-                                    <th>Keterangan</th>
-                                    {{-- <th>Sisa Nominal</th>
-                                    <th>Detail</th> --}}
-                                    {{-- <th>Detail Komisi</th> --}}
+                                    <th class="text-center">#</th>
+                                    <th class="text-center">Nopol</th>
+                                    <th class="text-center">Jenis Kendaraan</th>
+                                    <th class="text-center">Keterangan</th>
+                                    <th class="text-center">Tanggal</th>
                                 </tr>
                             </thead>
-                            <tbody id="indexTable">
+                            {{-- <tbody id="indexTable">
                                 <tr>
                                     <td>1</td>
                                     <td>mobil/motor</td>
@@ -75,7 +73,7 @@
                                         <button type="button" class="btn btn-danger btn-lg" style="font-size: 13px" >belum ditransaksi</button>
                                     </td>
                                 </tr>
-                            </tbody>
+                            </tbody> --}}
                         </table>
                 </div>      
             </div>
@@ -85,7 +83,62 @@
 
 <script> 
 
-    $('#nopol').select2(selectOption); 
+
+    $(document).ready(function () {
+        // $('#nopol').select2(selectOption); 
+        
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+        });
+
+        // load_data();
+
+        
+        // function load_data(from_date = '', to_date = '') {
+            
+            $('#transaksiTable').DataTable({
+                processing: true,
+                serverSide: true,
+                filter: true,
+                searching: false,
+                
+                ajax: {
+                type: 'GET',
+                url: '/transaksi/json',
+                // data: {
+                // from_date: from_date,
+                // to_date: to_date,
+                // }
+              },
+              columns: [
+                  {data: 'DT_RowIndex', name: '#'},
+                  {data: 'nopol', name: 'nopol'},
+                  {data: 'jenis_kendaraan', name: 'jenis_kendaraan'},
+                  {data: 'keterangan', name: 'keterangan'},
+                  {data: 'date', name: 'date'},
+                ]
+            });
+            
+        // }
+        
+    });
+
+    function transactionInput(id) {
+        var tanggal = $(`#pending${id}`).attr('data-date');
+        var nopol = $(`#pending${id}`).attr('data-nopol');
+        var transaksi_id = $(`#pending${id}`).attr('data-transaksiID');
+
+        console.log(tanggal);
+        console.log(nopol);
+
+        window.location.href = (`/transaction?tanggal=${tanggal}&nopol=${nopol}&transaksi_id=${transaksi_id}`);
+
+
+    }
+
+
 
 </script>
 

@@ -4,8 +4,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="CommissionModalLabel">Detail Transaksi</h5>
-                <button type="button" onclick="javascript:window.location.reload()" class="btn-close"
-                    data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" onclick="reload()"
+                     aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <b id="tgl_transaksi"></b> <br>
@@ -54,6 +54,10 @@
         });
 
     });
+
+    function reload(){
+        window.location.href="{{ route('transaction.index') }}"
+    }
 
     function commissionDetail(id) {
 

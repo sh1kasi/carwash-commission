@@ -14,6 +14,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Bundling_product;
 use App\Models\Product_transaction;
 use App\Models\Transaction_employee;
+use App\Models\Transaction_latests;
 use Illuminate\Database\Events\TransactionCommitted;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
@@ -27,7 +28,12 @@ class TransactionController extends Controller
     public function index(Request $request)
     {
         // dd($request);
-
+        if($request->transaksi_id){
+            $t = Transaction_latests::find($request->transaksi_id);
+            if($t->keterangan == 'success'){
+                return redirect()->route('transaction.index');
+            }
+        }
         $currentDate = Carbon::now()->format('Y-m-d');
 
         // dd(Carbon::now()->toTimeString());
@@ -81,6 +87,8 @@ class TransactionController extends Controller
             }
         } 
 
+
+
         // dd($transaction);
 
         function rupiah($angka)
@@ -120,6 +128,7 @@ class TransactionController extends Controller
             
             return "<a href='/transaction/edit/$row->id' type='button' class='btn btn-primary' id='transactionEdit'><i>Edit Transaksi</i></a>";
         })
+        ->with(['total_transaksi' => $transaction->sum('total_price'), 'total_komisi' => $transaction->sum('comission')])
         ->escapeColumns([])
         ->make(true);
 
@@ -198,7 +207,6 @@ class TransactionController extends Controller
     {
         // dd(Carbon::parse($request->date));
         $currentTime = Carbon::now()->toTimeString();
-        // dd($currentTime);
 
         $nopol = $request->nopol;
         $date = Carbon::parse($request->date)->setTimeFromTimeString($currentTime);
@@ -530,6 +538,13 @@ class TransactionController extends Controller
                 $employees = Employee::whereIn('id', $employee)->get();
 
                 $tambahan = $transaksi->products()->where('status', '1')->exists();
+
+                if($request->request_transaksi_id){
+                    $request_transaksi = Transaction_latests::find($request->request_transaksi_id);
+                    $request_transaksi->keterangan = 'success';
+                    $request_transaksi->save();
+                 }
+
                 if (count($extra_product) != 0 && count($normal_product) != 0) {
                     return response()->json([
                         'data' => $transaction,
@@ -543,7 +558,9 @@ class TransactionController extends Controller
                         'worker' => $employees,
                     ]);
                 }
+
         
+             
             }
     }
 
