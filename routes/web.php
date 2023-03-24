@@ -4,6 +4,7 @@ use App\Models\Transaction;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BundleController;
 use App\Http\Controllers\KasbonController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
@@ -23,14 +24,24 @@ use App\Http\Controllers\TransactionController;
 */
 
 Route::get('/', function () {
-    return redirect()->route('transaction.index');
+    return redirect()->route('login.index');
 });
 
+// Route::group(['middleware' => ['guest']], function () {
+// });
 
-// Transaction
+// Login
+Route::get('/login', [LoginController::class, 'index'])->name('login.index');
+Route::post('/login/store', [LoginController::class, 'login_store'])->name('login.store');
+Route::post('/logout', [LoginController::class, 'logout'])->name('user.logout');
+
+Route::group(['middleware' => ['auth']], function () {
+
+    // Transaction
 Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction.index');
 Route::get('/transaction/edit/{id}', [TransactionController::class, 'edit_index'])->name('transaction.edit');
 Route::post('/transaction/update/{id}', [TransactionController::class, 'transaction_update'])->name('transaction.update');
+Route::get('/transaction/delete/{id}', [TransactionController::class, 'transaction_delete'])->name('transaction.delete');
 Route::get('/transaction/json', [TransactionController::class, 'data'])->name('transaction.json');
 Route::post('/transaction-total', [TransactionController::class, 'total_price_check'])->name('transaction.totalCheck');
 Route::post('/transaction-store', [TransactionController::class, 'transaction_store'])->name('transaction.store');
@@ -74,7 +85,20 @@ Route::get('bundle/delete/{id}', [BundleController::class, 'destroy_bundle'])->n
 Route::get('/kasbon', [KasbonController::class, 'index'])->name('kasbon.index');
 Route::get('/kasbon/json', [KasbonController::class, 'data'])->name('kasbon.data');
 Route::post('/kasbon/input', [KasbonController::class, 'input_kasbon'])->name('kasbon.input');
+<<<<<<< HEAD
 Route::get('/kasbon/detail', [KasbonController::class, 'kasbon_detail'])->name('kasbon.detail');
+=======
+Route::post('/kasbon/detail', [KasbonController::class, 'kasbon_detail'])->name('kasbon.detail');
+Route::get('/kasbon/detail/json', [KasbonController::class, 'kasbon_data'])->name('kasbon.detail.json');
+
+
+
+});
+
+
+
+
+>>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
 
 //latest transaksi
 Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');

@@ -17,7 +17,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Nama</th>
-                                    {{-- <th>Status</th> --}}
+                                    <th>Status</th>
                                     <th>Total Mengerjakan</th>
                                     <th>Detail</th>
                                     <th>Aksi</th>
@@ -28,7 +28,7 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $data->name }}</td>
-                                        {{-- <td>{{ $data->role }}</td> --}}
+                                        <td>{{ $data->role }}</td>
                                         <td>{{ $transaction_employee->where('employee_id', $data->id)->count() }}</td>
                                         @php
                                            $count = $transaction_employee->where('employee_id', $data->id)->count();
@@ -124,8 +124,10 @@
 
 <script>
     $(document).ready( function () {
-        $('#Tables123').DataTable({"paging": false});
-    } );
+        $('#Tables123').DataTable({
+            pageLength: 10,
+        });
+    });
 </script>
 
 <script>

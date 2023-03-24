@@ -22,6 +22,7 @@ class EmployeeController extends Controller
     {
 
         $employee = Employee::get();
+        // dd($employee->links());
 
         // foreach ($employee as $key) {
         //     $count_transaction = Transaction_employee::where('employee_id', $key->id)->groupBy('transaction_id')
@@ -122,6 +123,19 @@ class EmployeeController extends Controller
         
         
         
+<<<<<<< HEAD
+=======
+        if ($request->role != 'Training') {
+            if (!$kasbon_check) {
+                $kasbon = new Kasbon;
+                $kasbon->employee_id = $employee->id;
+                $kasbon->promoted_date = $employee->created_at;
+                $kasbon->reset_date = $employee->created_at;
+                $kasbon->sisa_nominal = $employee->kasbon;
+                $kasbon->save();
+            }
+        }
+>>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
 
         return redirect('/employee')->with('success', 'Berhasil Mengedit Pegawai');
     }
@@ -263,8 +277,9 @@ class EmployeeController extends Controller
                      ->groupBy('transaction_id')
                      ->with('transactions')
                      ->with('employee_products')->get(); 
-                    // dd($transaction_employee);  
             } else {
+                $kasbon_employee = Employee_kasbon::where('employee_id', $id)->whereDate('tanggal_input', '>=', $request->from)
+                                                  ->whereDate('tanggal_input', '<=', $request->to)->get();
                 $transaction_employee = Transaction_employee::where('employee_id', $id)
                 ->whereDate('created_at', '>=', $request->from)
                 ->whereDate('created_at', '<=', $request->to)
@@ -282,6 +297,7 @@ class EmployeeController extends Controller
             ->get();
         }
 
+<<<<<<< HEAD
         $total_kasbon = 0;
         $sisa_nominal = 0;
         foreach ($kasbon_employee as $kasbon) {
@@ -293,6 +309,21 @@ class EmployeeController extends Controller
         $employee = Employee::find($id);
 
         return view('admin.employeeDetail', compact('transaction', 'transaction_employee', 'transaction_product', 'id', 'employee','total_kasbon','sisa_nominal'));
+=======
+        // dd($kasbon_employee);
+
+        $total_kasbon = 0;
+        $sisa_nominal = 0;
+        foreach ($kasbon_employee as $kasbon) {
+            $total_kasbon += $kasbon->nominal;
+            $sisa_nominal = $kasbon->kasbon_maksimal - $total_kasbon;
+        }
+
+
+        $employee = Employee::find($id);
+
+        return view('admin.employeeDetail', compact('transaction', 'transaction_employee', 'transaction_product', 'id', 'employee', 'total_kasbon', 'sisa_nominal'));
+>>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
     }
 
 

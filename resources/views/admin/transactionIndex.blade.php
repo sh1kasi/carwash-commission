@@ -113,6 +113,7 @@
     // dd($tambahan);
 @endphp
 
+<<<<<<< HEAD
 @if (!empty(Request('tanggal')))
     <input type="hidden" id="tanggal" value="{{ Request('tanggal') }}">
     <input type="hidden" id="nopol" value="{{ Request('nopol') }}">
@@ -126,6 +127,11 @@
             
             // $(".select2-search__field").val($("#nopol").val());
         });
+=======
+@if (Session::get('success'))
+    <script>
+     toastr.success("{!! session('success') !!}");
+>>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
     </script>
 @endif
 
@@ -175,7 +181,7 @@
                 // var commission = ''
                 var total_commission = 0
                 $(workers.services).each(function (key, product) {
-                    total_commission += product.commission
+                    total_commission = total_commission + parseFloat(product.commission)
                     services = services +
                         `<li>${product.employee_products.service} (Rp ${product.commission.toLocaleString('id-ID')})</li>`;
                     // console.log(`<li>${product.employee_products.service}</li>`);
@@ -207,39 +213,63 @@
 
             var extra_product = {!! session('extra_product') !!}
             var worker = {!! session('worker') !!}
+            var non_worker = {!! session('non_worker') !!}
             var id = {!! session('transaction_id') !!}
 
 
+            console.log(id);
             $('#CommissionModal').modal('hide');
             $('#extraWorksModal').modal('show');
             var html = ''
-            var extraArray = [];
+                var extraArray = [];
             $("#extra_transaction_id").val(id);
-            $(extra_product).each(function (index, ex_product) {
-              // console.log(ex_product);
-              extraArray.push(ex_product.id);
-              console.log(extraArray);
-              html += `
-                    <h5 class="modal-title" id="extraWorksModalLabel">${ex_product.service}</h5>
-                    <input type="hidden" id="product" name="product_id[]" value="${ex_product.id}">
-              `
-              $(worker).each(function (key, extra) {
-                console.log(extra.name);
-                html += `
-                  <input type="checkbox" name="employee_id_${index}[]" class="cbextra ms-2" onclick="extraWorkers(${extra.id} ,${ex_product.id})" value="${extra.id}" id="inputExtra">
-                  <label id="extraName">${extra.name}</label>  
-                  `
-                  $("#extraArray").val(extraArray);                
-                });
-                });
-              $("#pekerjaExtra").append(html);
 
-            
-            // $(response.extra_product).each(function (key, extra) {
-              // $("#extraWorksModalLabel").html(`Pilih penggarap ${response.extra_product}`);
-            // });
-            
-            $('#transactionForm').modal('hide');
+                $(extra_product).each(function (index, ex_product) {
+                  // console.log(ex_product);
+                  extraArray.push(ex_product.id);
+                  console.log(extraArray);
+                  var non_workers = ''
+                  $(non_worker).each(function (key, non) {
+                    non_workers += `<div class="">
+                      <input type="checkbox" name="employee_id_${index}[]" class="cbextra ms-2" onclick="extraWorkers(${non.id} ,${ex_product.id})" value="${non.id}" id="inputExtra">
+                      <label id="extraName">${non.name}</label>  
+                      </div>`
+                      $("#extraArray").val(extraArray);
+                  });
+                  var workers = ''
+                  $(worker).each(function (key, extra) {
+                    console.log(extra.name);
+                    workers += `<div class="">
+                      <input type="checkbox" name="employee_id_${index}[]" class="cbextra ms-2" onclick="extraWorkers(${extra.id} ,${ex_product.id})" value="${extra.id}" id="inputExtra">
+                      <label id="extraName">${extra.name}</label>  
+                      </div>`
+                      $("#extraArray").val(extraArray);                
+                  });
+                  html += `
+                        <h5 class="modal-title" id="extraWorksModalLabel">${ex_product.service}</h5>
+                        <div class="row">
+                          <div class="col-md-6 order-2">
+                            <p>Non-pekerja: </p>
+                            ${non_workers}
+                          </div>
+                          <div class="col-md-6">
+                            <p>Pekerja: </p>
+                             <input type="hidden" id="product" name="product_id[]" value="${ex_product.id}">
+                             ${workers}
+                          </div>
+                        </div>
+                  `
+                 
+
+                    });
+                  $("#pekerjaExtra").append(html);
+          
+                  
+                // $(response.extra_product).each(function (key, extra) {
+                  // $("#extraWorksModalLabel").html(`Pilih penggarap ${response.extra_product}`);
+                // });
+    
+                $('#transactionForm').modal('hide');
             
         });
 
@@ -294,13 +324,14 @@
 
         function load_data(from_date = '', to_date = '') {
             
-            $('#Tables123').DataTable({
+             var table = $('#Tables123').DataTable({
               processing: true,
               serverSide: true,
               filter: true,
-              paging: false,
+              pageLength: 10,
+              paging: true,
               searching: false,
-
+              lengthChange: true,
               ajax: {
                   type: 'GET',
                 url: '/transaction/json',
@@ -316,7 +347,7 @@
                 }
               },
               columns: [
-                  {data: 'id', name: '#'},
+                  {data: 'DT_RowIndex', name: '#'},
                   {data: 'customer', name: 'NO POL'},
                   {data: 'service', name: 'Jenis Layanan'},
                   {data: 'workers', name: 'Penggarap'},
@@ -328,6 +359,18 @@
               ]
             });
 
+            // $('.dataTables_filter input').unbind().keyup(function (e) { 
+            //     var value = $(this).val();
+            //     if (value.length > 0) {
+            //         // alert(value);
+            //         resetColumnFilters();
+            //         table.columns().search(value).draw();
+            //     } else {
+            //         resetColumnFilters();
+            //         table.columns().search('').draw();
+            //     }
+            // });
+
         }
 
 
@@ -335,7 +378,31 @@
 
 
 
+
     });
+
+    function transactionDelete(id, customer) {
+        // var id = $(this).data('id');
+            // console.log(id);
+            var name = $(this).data('name');
+            swal({
+               title: "Kamu yakin?",
+               text: "Transaksi dengan plat nomor " +customer+" akan terhapus!",
+               icon: "warning",
+               buttons: true,
+               dangerMode: true,
+               })
+               .then((willDelete) => {
+               if (willDelete) {
+                   window.location = "/transaction/delete/"+id+""
+                   swal("Transaksi dengan plat nomor "+customer+" berhasil terhapus" , {
+                   icon: "success",
+                   buttons: false,
+                   });
+                   
+               }
+           });
+    }
 
 
 </script>

@@ -11,8 +11,13 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Kasbon</h5>
+<<<<<<< HEAD
                         {{-- <a href="/bundle/form" id="addBundle" class="btn btn-primary m-b-md">Tambah KasbonP</a> --}}
                         <div class="d-flex justify-content-evenly input-daterange">
+=======
+
+                        {{-- <div class="d-flex justify-content-evenly input-daterange">
+>>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
                             <div class="from_date d-flex">                              
                                 <p style="width: 155px">Dari tanggal: </p>
                                 <input type="text" class="form-control mb-3" name="from" id="from_date">
@@ -23,7 +28,7 @@
                                 <button class="btn btn-primary mb-3 ms-1" type="button" id="search_date"><i class="fa fa-search" aria-hidden="true"></i></i></button>
                                 <button class="btn btn-warning mb-3 ms-1" type="button" id="refresh"><i class="fa fa-refresh" aria-hidden="true"></i></i></button>
                             </div>
-                        </div>
+                        </div> --}}
 
                         {{-- <a href="#" id="addRow" data-bs-toggle="modal" data-bs-target="#transactionForm" class="btn btn-primary m-b-md">Tambah Transaksi</a> <br> --}}
                         {{-- <p style="font-size: 16px; font-weight: 600; text-align:center" class="pb-6">Transaksi Tanggal {{ $tgl }}</p> --}}
@@ -73,8 +78,13 @@
     
 <script>
 
+<<<<<<< HEAD
     function inputKasbon(id) { 
         // console.log(id); 
+=======
+    function inputKasbon(id) {
+        console.log(id);
+>>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
         $("#employee_id").val(id);
     }
 
@@ -86,10 +96,13 @@
           }
         });
 
+<<<<<<< HEAD
         // load_data();
 
         
         // function load_data(from_date = '', to_date = '') {
+=======
+>>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
             
             $('#Tables123').DataTable({
                 processing: true,
@@ -100,10 +113,13 @@
                 ajax: {
                 type: 'GET',
                 url: '/kasbon/json',
+<<<<<<< HEAD
                 // data: {
                 // from_date: from_date,
                 // to_date: to_date,
                 // }
+=======
+>>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
               },
               columns: [
                   {data: 'DT_RowIndex', name: '#'},
@@ -115,8 +131,11 @@
                 ]
             });
             
+<<<<<<< HEAD
         // }    
         
+=======
+>>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
     });
 
 </script>

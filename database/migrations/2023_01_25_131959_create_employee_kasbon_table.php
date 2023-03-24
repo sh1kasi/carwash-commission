@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('employee_id')->constrained('employees');
             $table->foreignId('kasbon_id')->constrained('kasbons');
             $table->bigInteger('nominal');
-            $table->bigInteger('kasbon_maksimal');
+            $table->bigInteger('kasbon_maksimal')->nullable();
             $table->timestamp('tanggal_input');
             $table->timestamps();
         });

@@ -9,13 +9,18 @@ use App\Models\Employee;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Employee_kasbon;
+<<<<<<< HEAD
 use Illuminate\Support\Facades\DB;
+=======
+>>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
 use Yajra\DataTables\Contracts\DataTable;
 
 class KasbonController extends Controller
 {
+
     public function index()
     {
+<<<<<<< HEAD
         // $kasbon = Kasbon::get();
         // $employee_tetap = Employee::where('role', 'Tetap')->get();
         // $now = Carbon::now()->timezone('Asia/Jakarta');
@@ -41,11 +46,15 @@ class KasbonController extends Controller
         // dd(Kasbon::where('employee_id', $data->id)->get());
 
         // dd($arr_kasbon);
+=======
+        // dd(Carbon::now()->addDay(7));
+>>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
         return view('admin.kasbonIndex');
     }
 
     public function data(Request $request)
     {
+<<<<<<< HEAD
         $request = request();
         if ($request->ajax()) {
             // dd('gaada');
@@ -62,6 +71,10 @@ class KasbonController extends Controller
             // dd($kasbon);
         } 
     
+=======
+
+        $kasbon = Kasbon::with('employees')->get();
+>>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
 
         function rupiah($angka)
         {
@@ -117,6 +130,7 @@ class KasbonController extends Controller
 
             if ($input_check > 6) {
                 if ($row->kasbon_input == null) {
+<<<<<<< HEAD
                     return '- &nbsp; &nbsp; <button class="text-primary btn border-0" type="button" data-bs-toggle="modal" data-bs-target="#inputKasbon" onclick="inputKasbon('.$row->worker?->id.')" id="input_kasbon"><i class="fa-solid fa-dollar-sign fa-lg"></i></button>';
                 } else {
                     return Carbon::parse($row->kasbon_input)->translatedFormat('j F Y'). '&nbsp; &nbsp; <button class="text-primary btn border-0" type="button" data-bs-toggle="modal" onclick="inputKasbon('.$row->worker?->id.')" data-bs-target="#inputKasbon" id="input_kasbon"><i class="fa-solid fa-dollar-sign fa-lg"></i></button>';
@@ -129,12 +143,33 @@ class KasbonController extends Controller
                 }
             }    
                 })
+=======
+                    return '- &nbsp; &nbsp; <button class="text-primary btn border-0" type="button" data-bs-toggle="modal" data-bs-target="#inputKasbon" onclick="inputKasbon('.$row->workers->id.')" id="input_kasbon"><i class="fa-solid fa-dollar-sign fa-lg"></i></button>';
+                } else {
+                    return Carbon::parse($row->kasbon_input)->translatedFormat('j F Y'). '&nbsp; &nbsp; <button class="text-primary btn border-0" type="button" data-bs-toggle="modal" onclick="inputKasbon('.$row->workers->id.')" data-bs-target="#inputKasbon" id="input_kasbon"><i class="fa-solid fa-dollar-sign fa-lg"></i></button>';
+                }
+            } else {
+                if ($row->kasbon_input == null) {
+                    return '- &nbsp; &nbsp; <button class="text-primary btn border-0" type="button" data-bs-toggle="modal" data-bs-target="#inputKasbon" onclick="inputKasbon('.$row->workers->id.')" id="input_kasbon"><i class="fa-solid fa-dollar-sign fa-lg"></i></button>';
+                } else {
+                    return Carbon::parse($row->kasbon_input)->translatedFormat('j F Y'). '&nbsp; &nbsp; <button class="text-primary btn border-0" disabled type="button" data-bs-toggle="modal" onclick="inputKasbon('.$row->workers->id.')" data-bs-target="#inputKasbon" id="input_kasbon"><i class="fa-solid fa-dollar-sign fa-lg"></i></buton>';
+                }
+            }
+
+            // dd($input_check);
+
+            
+        })
+        
+
+>>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
         ->escapeColumns([])
         ->addIndexColumn()
         ->make(true);
     } 
 
     public function input_kasbon(Request $request)
+<<<<<<< HEAD
     {   
         // dd($request);
         if($request->nominal < 100000){
@@ -175,6 +210,33 @@ class KasbonController extends Controller
         }
         return redirect('/kasbon')->with('error', 'Kasbon Melebihi Batas maksimal');
         
+=======
+    {
+        $this->validate($request, [
+            'tgl_input' => 'required',
+            'nominal' => 'required|max:100000'
+        ]);
+
+        $kasbon = Kasbon::where('employee_id', $request->employee_id)->first();
+        // dd($kasbon);
+
+        if ($kasbon->workers->role == 'Tetap') {  
+            $kasbon->kasbon_input = $request->tgl_input;
+            $kasbon->sisa_nominal = $kasbon->sisa_nominal - $request->nominal;
+            if ($kasbon->sisa_nominal < 0) {
+                return redirect('/kasbon')->with('kasbon_empty', 'Jatah kasbon '. $kasbon->workers->name .' telah habis');
+            }
+            $kasbon->save();
+            $kasbon->employees()->attach($request->employee_id, ['nominal' => $request->nominal, 'kasbon_maksimal' => $kasbon->workers->kasbon, 'tanggal_input' => $request->tgl_input]);
+        } else {
+            $kasbon->kasbon_input = $request->tgl_input;
+            $kasbon->save();
+            $kasbon->employees()->attach($request->employee_id, ['nominal' => $request->nominal, 'kasbon_maksimal' => $kasbon->workers->kasbon, 'tanggal_input' => $request->tgl_input]);
+        }
+
+
+        return redirect('/kasbon')->with('success', 'Berhasil menginput kasbon '.$kasbon->workers->name);
+>>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
     }
     public function kasbon_detail(Request $request)
     {
@@ -182,6 +244,10 @@ class KasbonController extends Controller
         // dd($tgl_input->year);
         // dd(Ca)
         
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
         $kasbon_employee = Employee_kasbon::where('employee_id', $request->id)->get();
         // dd($kasbon_employee);
         $kasbons = [];
@@ -297,6 +363,74 @@ class KasbonController extends Controller
 
     }
 
+<<<<<<< HEAD
+=======
+    public function kasbon_data(Request $request)
+    {
+        $tgl_input = Carbon::parse($request->tgl_input);
+
+        if ($request->ajax()) {
+            if (!empty($request->from_date)) {
+                if ($request->from_date === $request->to_date) {
+                    $kasbon_employee = Employee_kasbon::where('employee_id', $request->id)->whereDate('tanggal_input', $request->from_date)->get();
+                } else {
+                    $kasbon_employee = Employee_kasbon::where('employee_id', $request->id)->whereDate('tanggal_input', '>=', $request->from_date)
+                                                  ->whereDate('tanggal_input', '<=', $request->to_date)->get();
+                }
+            } else {
+                $kasbon_employee = Employee_kasbon::where('employee_id', $request->id)->get();
+            }
+        }
+
+        $bon = Kasbon::where('employee_id', $request->id)->first();
+
+        // dd($kasbon_employee);
+
+        $kasbons = [];
+        $total_kasbon = 0;
+        $sisa_nominal = 0;
+        foreach ($kasbon_employee as $kasbon) {
+            $total_kasbon += $kasbon->nominal;
+            $sisa_nominal = $kasbon->kasbon_maksimal - $total_kasbon;
+            $tanggal = Carbon::parse($kasbon->tanggal_input)->translatedFormat('j F Y');
+            $push['nominal'] = $kasbon->nominal;
+            $push['tanggal'] = $tanggal;
+            array_push($kasbons, $push);
+        }
+
+        function rp($angka)
+        {
+            $hasil_rupiah = "Rp " . number_format($angka,0,',','.');
+            return $hasil_rupiah;
+        }
+
+        if ($sisa_nominal < 0) {
+            $sisa_nominal = 0;
+        }
+
+        if ($bon->workers->role == 'Tetap') {
+            $sisa_nominal = $sisa_nominal;
+        } else {
+            $sisa_nominal = 0;
+        }
+
+        return Datatables($kasbons)
+        ->addColumn('tgl_input', function($row) {
+            return $row['tanggal'];
+        })
+        ->addColumn('nominal_kasbon', function($row) {
+            return rp($row['nominal']);
+        })
+        ->with('sisa_kasbon', $sisa_nominal)
+        // return datatables($sisa_nominal)
+        ->toJson();
+
+
+        // ->escapeColumns([])
+        // ->make(true);
+
+    }
+>>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
 }
 
 

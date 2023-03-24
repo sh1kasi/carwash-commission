@@ -18,7 +18,10 @@
                         <p style=" font-size: 12px">Hingga tanggal: </p>
                         <input type="text" class="form-control mb-3 ms-1" name="to" value="" id="to_date">
                         <button class="btn btn-primary mb-3 ms-1" type="button" id="search_date"><i class="fa fa-search" aria-hidden="true"></i></i></button>
+<<<<<<< HEAD
                         {{-- <button class="btn btn-success mb-3 ms-2" type="button" id="print_pdf"><i class="fa fa-download" aria-hidden="true"></i></button> --}}
+=======
+>>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
                         <button class="btn btn-warning mb-3 ms-1" type="button" id="refresh"><i class="fa fa-refresh" aria-hidden="true"></i></i></button>
                     </div>
                 </div>
@@ -41,7 +44,10 @@
                         <tr class="d-none" id="footerTable">
                             <th colspan="1">Kasbon yang tersisa: </th>
                             <td id="sisa_kasbon"></td>
+<<<<<<< HEAD
                             <td id="sisa_nominal"></td>
+=======
+>>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
                         </tr>
                     </tfoot>
                 </table>
@@ -72,7 +78,10 @@
 
         
     function detailKasbon(id, tgl_input) {
+<<<<<<< HEAD
         console.log(id, tgl_input);
+=======
+>>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
             $(document).ready(function () {
             
             console.log(tgl_input);
@@ -125,12 +134,20 @@
                     pageLength: 10,
                     bInfo: false,
                     destroy: true,
+<<<<<<< HEAD
+=======
+                    destroy: true,
+>>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
                     language: {
                         emptyTable: 'Kasbon kosong'
                     },
                     ajax: {
                         type: 'GET',
+<<<<<<< HEAD
                         url: 'kasbon/detail',
+=======
+                        url: 'kasbon/detail/json',
+>>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
                         data: {
                             id: id,
                             from_date: from_date,
@@ -139,12 +156,20 @@
                         }
                     },
                     "drawCallback": function(settings) {
+<<<<<<< HEAD
                         $("#sisa_kasbon").html(`Rp ${settings.json.sisa_nominal.toLocaleString('id-ID')}`);
+=======
+                        $("#sisa_kasbon").html(`Rp ${settings.json.sisa_kasbon.toLocaleString('id-ID')}`);
+>>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
                     },
                     columns: [
                         {data: 'tgl_input', name: 'Tanggal Input Kasbon'},
                         {data: 'nominal_kasbon', name: 'Nominal Kasbon'},
+<<<<<<< HEAD
                         {data: 'sisa_kasbon', name: 'Sisa Kasbon Bukan Ini'},
+=======
+                        {data: 'sisa_kasbon', name: 'Sisa Kasbon Bulan Ini: '},
+>>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
                     ],
                 });
             }

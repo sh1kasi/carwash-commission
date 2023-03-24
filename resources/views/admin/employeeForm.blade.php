@@ -33,8 +33,13 @@
                                 <option value="Training">Training</option>
                                 <option value="Freelance">Freelance</option>
                               </select>
+<<<<<<< HEAD
                             </div> 
                              <div class="mb-3 d-none" id="input_kasbon">
+=======
+                            </div>
+                            <div class="mb-3 d-none" id="input_kasbon">
+>>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
                                 <label for="kasbon" class="form-label">Nominal Maksimal Kasbon</label>
                                 <input type="text" id="kasbon" value="" name="kasbon" class="form-control" id="kasbon" placeholder="Masukkan maksimal kasbon" aria-describedby="emailHelp">
                             </div>
