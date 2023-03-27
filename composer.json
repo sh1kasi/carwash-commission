@@ -8,8 +8,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.0",
-<<<<<<< HEAD
+        "php": "^7.0",
         "barryvdh/laravel-dompdf": "^2.0",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^3.0",
@@ -18,14 +17,12 @@
         "laravel/sanctum": "*",
         "laravel/tinker": "^2.0",
         "milon/barcode": "^10.0",
-        "yajra/laravel-datatables": "*"
-=======
+        "yajra/laravel-datatables": "*",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0"
->>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
     },
     "require-dev": {
         "facade/ignition": "^2.3.6",
@@ -37,12 +34,9 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-<<<<<<< HEAD
         "sort-packages": true,
-        "platform-check": false
-=======
+        "platform-check": false,
         "sort-packages": true
->>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
     },
     "extra": {
         "laravel": {
