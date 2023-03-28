@@ -206,7 +206,6 @@
                   <li class="mt-3 @if (Route::current()->getName() == 'kasbon.index')
                     active-page
                 @endif">
-<<<<<<< HEAD
                     <a href={{ route('kasbon.index') }}><i data-feather="archive"></i>Kasbon</a>
                   </li>
                   
@@ -215,10 +214,6 @@
                 @endif">
                     <a href={{ route('total.index') }}><i data-feather="pie-chart"></i>Total</a>
                   </li> --}}
-=======
-                    <a href={{ route('kasbon.index') }}><i data-feather="box"></i>Kasbon</a>
-                  </li>
->>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
                 </ul>
             </div>        
             </div>

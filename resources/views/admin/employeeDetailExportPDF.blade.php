@@ -66,15 +66,23 @@
             $no = 1;
             $total_commission = 0;
             $total_kasbon = 0;
+            $sisa_nominal = 0;
+            if ($employee->role == 'Tetap') {
+                $sisa = $employee->kasbon - $employee_kasbon->sum('nominal');
+            } else {
+                $sisa = $daterange->sum('commission') - $employee_kasbon->sum('nominal');
+            }
+            
             @endphp
 
             @foreach ($employee_kasbon as $kasbon)
                 @php
                     $total_kasbon += $kasbon->nominal;
                     $sisa_nominal = $kasbon->kasbon_maksimal - $total_kasbon;
+                    
                 @endphp
+                
             @endforeach
-
             @foreach ($daterange as $data)
             {{-- @foreach ($data->employees->where('id', $id) as $worker) --}}
             <tr id="tbody">
@@ -144,9 +152,9 @@
                 <tr>
                     <td colspan="1" text-align="center"></td>
                     <td class="table-primary" style="text-align: center">Total Kasbon : </td>
-                    <td class="table-primary" style="text-align: center">@currency($total_kasbon)</td>
+                    <td class="table-primary" style="text-align: center">@currency($employee_kasbon->sum('nominal'))</td>
                     <td class="table-primary" style="text-align: center">Sisa Kasbon</td>
-                    <td class="table-primary" style="text-align: center">@currency($sisa_nominal)</td>
+                    <td class="table-primary" style="text-align: center">@currency($sisa)</td>
                 </tr>
             </th>
         </tfoot>

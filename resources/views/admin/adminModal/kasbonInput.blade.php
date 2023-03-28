@@ -13,11 +13,7 @@
 
                     <ul id="err_list"></ul>
 
-<<<<<<< HEAD
                     <div class="form-group pb-1 input-daterange col-md-6">
-=======
-                    <div class="form-group pb-1 input-daterange" id="awan">
->>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
                         <label for="exampleInputEmail1"><b>Tanggal Input</b></label> <br>
                         <input type="text" class="form-control mt-2 mb-2" id="tgl_input"
                             style="text-transform: uppercase;" placehorer="Masukkan tanggal input kasbon"
@@ -26,11 +22,7 @@
                     </div>
                     <div class="form-group pb-1 col-md-6">
                         <label for="exampleInputEmail1"><b>Masukkan Nominal Kasbon</b></label> <br>
-<<<<<<< HEAD
                         <input type="text" style="width: 100%;" name="nominal" class="form-control mt-2 mb-0" id="tgl_input"
-=======
-                        <input type="text" style="width: 40%;" name="nominal" class="form-control mt-2 mb-2" id="tgl_input"
->>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
                             style="text-transform: uppercase;" placehorer="Masukkan nominal kasbon"
                             aria-describedby="emailHelp"></input>
                             <small class="text-danger">*maksimal 100.000 rupiah</small>

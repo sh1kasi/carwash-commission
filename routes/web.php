@@ -85,20 +85,7 @@ Route::get('bundle/delete/{id}', [BundleController::class, 'destroy_bundle'])->n
 Route::get('/kasbon', [KasbonController::class, 'index'])->name('kasbon.index');
 Route::get('/kasbon/json', [KasbonController::class, 'data'])->name('kasbon.data');
 Route::post('/kasbon/input', [KasbonController::class, 'input_kasbon'])->name('kasbon.input');
-<<<<<<< HEAD
 Route::get('/kasbon/detail', [KasbonController::class, 'kasbon_detail'])->name('kasbon.detail');
-=======
-Route::post('/kasbon/detail', [KasbonController::class, 'kasbon_detail'])->name('kasbon.detail');
-Route::get('/kasbon/detail/json', [KasbonController::class, 'kasbon_data'])->name('kasbon.detail.json');
-
-
-
-});
-
-
-
-
->>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
 
 //latest transaksi
 Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
@@ -113,4 +100,6 @@ Route::post('/customer/store', [CustomerController::class, 'store'])->name('cust
 Route::get('/scanqr', function() {
     return view('scanqr');
 })->name('scan-qr');
+
+});
 // Route::post('/customer-import', [CustomerController::class, 'importExcel'])->name('customer.import');

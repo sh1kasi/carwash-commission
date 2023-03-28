@@ -123,19 +123,6 @@ class EmployeeController extends Controller
         
         
         
-<<<<<<< HEAD
-=======
-        if ($request->role != 'Training') {
-            if (!$kasbon_check) {
-                $kasbon = new Kasbon;
-                $kasbon->employee_id = $employee->id;
-                $kasbon->promoted_date = $employee->created_at;
-                $kasbon->reset_date = $employee->created_at;
-                $kasbon->sisa_nominal = $employee->kasbon;
-                $kasbon->save();
-            }
-        }
->>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
 
         return redirect('/employee')->with('success', 'Berhasil Mengedit Pegawai');
     }
@@ -297,7 +284,6 @@ class EmployeeController extends Controller
             ->get();
         }
 
-<<<<<<< HEAD
         $total_kasbon = 0;
         $sisa_nominal = 0;
         foreach ($kasbon_employee as $kasbon) {
@@ -309,21 +295,6 @@ class EmployeeController extends Controller
         $employee = Employee::find($id);
 
         return view('admin.employeeDetail', compact('transaction', 'transaction_employee', 'transaction_product', 'id', 'employee','total_kasbon','sisa_nominal'));
-=======
-        // dd($kasbon_employee);
-
-        $total_kasbon = 0;
-        $sisa_nominal = 0;
-        foreach ($kasbon_employee as $kasbon) {
-            $total_kasbon += $kasbon->nominal;
-            $sisa_nominal = $kasbon->kasbon_maksimal - $total_kasbon;
-        }
-
-
-        $employee = Employee::find($id);
-
-        return view('admin.employeeDetail', compact('transaction', 'transaction_employee', 'transaction_product', 'id', 'employee', 'total_kasbon', 'sisa_nominal'));
->>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
     }
 
 
@@ -436,7 +407,7 @@ class EmployeeController extends Controller
         ]);
         $pdf = PDF::loadview('admin.employeeDetailExportPDF');
         // dd($pdf);
-        return $pdf->download('Komisi '. $employee->name .'.pdf');
+        return $pdf->stream('Komisi '. $employee->name .'.pdf');
         // return response()->download($pdf, 'testKomisi.pdf');
 
     }

@@ -113,7 +113,6 @@
     // dd($tambahan);
 @endphp
 
-<<<<<<< HEAD
 @if (!empty(Request('tanggal')))
     <input type="hidden" id="tanggal" value="{{ Request('tanggal') }}">
     <input type="hidden" id="nopol" value="{{ Request('nopol') }}">
@@ -127,11 +126,6 @@
             
             // $(".select2-search__field").val($("#nopol").val());
         });
-=======
-@if (Session::get('success'))
-    <script>
-     toastr.success("{!! session('success') !!}");
->>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
     </script>
 @endif
 

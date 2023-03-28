@@ -14,16 +14,10 @@ use Yajra\Datatables\Datatables;
 use App\Models\Product_transaction;
 use App\Http\Controllers\Controller;
 use App\Models\Transaction_employee;
-<<<<<<< HEAD
 use App\Models\Transaction_latests;
 use Illuminate\Database\Events\TransactionCommitted;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
-=======
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Database\Events\TransactionCommitted;
->>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
 
 
 class TransactionController extends Controller
@@ -34,18 +28,12 @@ class TransactionController extends Controller
     public function index(Request $request)
     {
         // dd($request);
-<<<<<<< HEAD
         if($request->transaksi_id){
             $t = Transaction_latests::find($request->transaksi_id);
             if($t->keterangan == 'success'){
                 return redirect()->route('transaction.index');
             }
         }
-=======
-        // Auth::logout();
-
-
->>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
         $currentDate = Carbon::now()->format('Y-m-d');
 
         // dd(Carbon::now()->toTimeString());
@@ -147,11 +135,7 @@ class TransactionController extends Controller
             return "<a href='/transaction/edit/$row->id' type='button' class='btn btn-primary' id='transactionEdit'><i class='fas fa-edit'></i></a>
                     <a href='#' type'button' class='btn btn-danger' data-id='$row->id' data-name='$row->nopol' onclick='transactionDelete(".$row->id.", ".'"'.$row->customer.'"'.")' id='delete'><i class='fa fa-trash' aria-hidden='true'</a>";
         })
-<<<<<<< HEAD
         ->with(['total_transaksi' => $transaction->sum('total_price'), 'total_komisi' => $transaction->sum('comission')])
-=======
-        ->startsWithSearch()
->>>>>>> 1127681ec01f0f90e11671eeb8d3253032a9d12c
         ->escapeColumns([])
         ->make(true);
 
