@@ -103,3 +103,4 @@ Route::get('/scanqr', function() {
 
 });
 // Route::post('/customer-import', [CustomerController::class, 'importExcel'])->name('customer.import');
+Route::post('/store-token', [WebNotificationController::class, 'storeToken'])->name('store.token');

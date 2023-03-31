@@ -14,14 +14,14 @@
         {{-- <div class="scanmobil col-md-6">
             <img src="{{ asset('image/scanmobil.png') }}" style="width:200px" alt="mobil">
         </div> --}}
-        <div class="scanmobil">
+        {{-- <div class="scanmobil">
             <h1>Link Mobil</h1>
             <p>{!! DNS2D::getBarcodeHTML(route('customer.mobil'), 'QRCODE'); !!}</p>
-        </div>
-        {{-- <div class="scanmotor">
+        </div> --}}
+        <div class="scanmotor">
             <h1>Link Motor</h1>
             <p>{!! DNS2D::getBarcodeHTML(route('customer.motor'), 'QRCODE'); !!}</p>
-        </div> --}}
+        </div>
     </div>
 </body>
 </html>

@@ -247,5 +247,117 @@
             document.getElementById('logout').submit();
           }
         </script>
+        {{-- <script type="module">
+          // Import the functions you need from the SDKs you need
+          import { initializeApp } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-app.js";
+          import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-analytics.js";
+          // TODO: Add SDKs for Firebase products that you want to use
+          // https://firebase.google.com/docs/web/setup#available-libraries
+        
+          // Your web app's Firebase configuration
+          // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+          const firebaseConfig = {
+            apiKey: "AIzaSyBhtLhj6o05riQ45GDu5Ux7F0ULgqvHmkk",
+            authDomain: "intive-carwash.firebaseapp.com",
+            projectId: "intive-carwash",
+            storageBucket: "intive-carwash.appspot.com",
+            messagingSenderId: "650709897252",
+            appId: "1:650709897252:web:69882c92b6e5a9881388b1",
+            measurementId: "G-JC9CY3P95P"
+          };
+        
+          // Initialize Firebase
+          const app = initializeApp(firebaseConfig);
+          const analytics = getAnalytics(app);
+        </script> --}}
+        <script>
+          // Give the service worker access to Firebase Messaging.
+          // Note that you can only use Firebase Messaging here. Other Firebase libraries
+          // are not available in the service worker.importScripts('https://www.gstatic.com/firebasejs/7.23.0/firebase-app.js');
+          importScripts('https://www.gstatic.com/firebasejs/8.3.2/firebase-app.js');
+          importScripts('https://www.gstatic.com/firebasejs/8.3.2/firebase-messaging.js');
+          /*
+          Initialize the Firebase app in the service worker by passing in the messagingSenderId.
+          */
+          firebase.initializeApp({
+              apiKey: 'api-key',
+              authDomain: 'project-id.firebaseapp.com',
+              databaseURL: 'https://project-id.firebaseio.com',
+              projectId: 'project-id',
+              storageBucket: 'project-id.appspot.com',
+              messagingSenderId: 'sender-id',
+              appId: 'app-id',
+              measurementId: 'G-measurement-id',
+          });
+
+          // Retrieve an instance of Firebase Messaging so that it can handle background
+          // messages.
+          const messaging = firebase.messaging();
+          messaging.setBackgroundMessageHandler(function (payload) {
+              console.log("Message received.", payload);
+              const title = "Hello world is awesome";
+              const options = {
+                  body: "Your notificaiton message .",
+                  icon: "/firebase-logo.png",
+              };
+              return self.registration.showNotification(
+                  title,
+                  options,
+              );
+          });
+        </script>
+        <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase.js"></script>
+        <script>
+            var firebaseConfig = {
+                apiKey: 'api-key',
+                authDomain: 'project-id.firebaseapp.com',
+                databaseURL: 'https://project-id.firebaseio.com',
+                projectId: 'project-id',
+                storageBucket: 'project-id.appspot.com',
+                messagingSenderId: 'sender-id',
+                appId: 'app-id',
+                measurementId: 'G-measurement-id',
+            };
+            firebase.initializeApp(firebaseConfig);
+            const messaging = firebase.messaging();
+            function startFCM() {
+                messaging
+                    .requestPermission()
+                    .then(function () {
+                        return messaging.getToken()
+                    })
+                    .then(function (response) {
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                        $.ajax({
+                            url: '{{ route("store.token") }}',
+                            type: 'POST',
+                            data: {
+                                token: response
+                            },
+                            dataType: 'JSON',
+                            success: function (response) {
+                                alert('Token stored.');
+                            },
+                            error: function (error) {
+                                alert(error);
+                            },
+                        });
+                    }).catch(function (error) {
+                        alert(error);
+                    });
+            }
+            messaging.onMessage(function (payload) {
+                const title = payload.notification.title;
+                const options = {
+                    body: payload.notification.body,
+                    icon: payload.notification.icon,
+                };
+                new Notification(title, options);
+            });
+        </script>
     </body>
 </html>

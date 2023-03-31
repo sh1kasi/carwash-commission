@@ -22,6 +22,11 @@ use Illuminate\Support\Facades\Session;
 
 class TransactionController extends Controller
 {
+    // public function storeToken(Request $request)
+    // {
+    //     auth()->user()->update(['device_key'=>$request->token]);
+    //     return response()->json(['Token successfully stored.']);
+    // }
     
     
 
